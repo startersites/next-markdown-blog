@@ -8,6 +8,8 @@ A lightly opinionated, full-featured Next.js blog managed through Git Workflows 
 - Full API
 - Content management UI with workflows
 - No database, hosted in git repo
+- Config file for managing blog settings
+- Metadata integration
 
 ## Main Technologies Used
 
