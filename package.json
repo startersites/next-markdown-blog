@@ -1,7 +1,9 @@
 {
   "name": "next-markdown-blog-starter",
   "version": "0.1.0",
-  "private": true,
+  "repository": "https://github.com/morganmspencer/next-markdown-blog-starter.git",
+  "author": "Morgan Spencer",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

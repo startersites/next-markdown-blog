@@ -1,6 +1,6 @@
 # Next.js Markdown Blog Starter
 
-A lightly opinionated, full featured Next.js blog managed through Git Workflows with markdown files.
+A lightly opinionated, full-featured Next.js blog managed through Git Workflows with markdown files.
 
 ## Features
 
