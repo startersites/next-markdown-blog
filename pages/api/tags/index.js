@@ -5,6 +5,19 @@ var md = require('markdown-it')()
 
 export const tagsDirectory = join(process.cwd(), '_content/tags')
 
+export function getTagsBySlugs(slugs = [], fields = []) {
+  var tags = []
+
+  if (slugs !== undefined && slugs.length) {
+    slugs.forEach((slug) => {
+      const tag = getTagBySlug(slug, fields)
+      tags.push(tag)
+    })
+  }
+
+  return tags
+}
+
 export function getTagBySlug(slug, fields) {
   const realSlug = slug.replace(/\.md$/, '')
 
