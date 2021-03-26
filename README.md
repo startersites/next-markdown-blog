@@ -1,16 +1,19 @@
 # Next.js Markdown Blog Starter
 
-A lightly opinionated, full featured Next.js blog managed through Git Workflows.
+A lightly opinionated, full featured Next.js blog managed through Git Workflows with markdown files.
 
 ## Features
 
-- Categories, Tags, and Authors
+- Posts, Categories, Tags, and Authors
 - Full API
+- Content management UI with workflows
+- No database, hosted in git repo
 
 ## Main Technologies Used
 
-- [Next.js](https://nextjs.org/) -
-- [NetlifyCMS](https://www.netlifycms.org/) -
+- [Next.js](https://nextjs.org/) - React framework
+- [NetlifyCMS](https://www.netlifycms.org/) - Git workflow content management
+- [TailwindCSS](https://tailwindcss.com/) (optional) - Utility CSS framework
 
 ## Deploying to Netlify
 
