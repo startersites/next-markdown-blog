@@ -1,10 +1,13 @@
 import Link from 'next/link'
 import { getPostsByTag } from 'pages/api/tags/[tag]/posts'
 import { getTags, getTagBySlug } from 'pages/api/tags'
+import MetaHead from 'components/MetaHead'
+const blog = require('nmbs.config.json')
 
 export default function Tag({ tag, posts }) {
   return (
     <>
+      <MetaHead title={`${tag.title}${blog.seo.sep}${blog.tags.name}`} />
       <h1>{tag.title}</h1>
       <ul>
         {posts.map(post => (

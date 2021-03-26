@@ -3,11 +3,13 @@ import { getPosts, getPostBySlug } from 'pages/api/posts'
 import { getCategoryBySlug } from 'pages/api/categories'
 import { getAuthorBySlug } from 'pages/api/authors'
 import { getTagsBySlugs } from 'pages/api/tags'
+import MetaHead from 'components/MetaHead'
 const blog = require('nmbs.config.json')
 
 export default function Post({ post, category, author, tags }) {
   return (
     <>
+      <MetaHead title={`${post.title}`} />
       <h1>{post.title}</h1>
       <p>
         <span>by: </span>

@@ -1,10 +1,13 @@
 import Link from 'next/link'
 import { getPostsByAuthor } from 'pages/api/authors/[author]/posts'
 import { getAuthors, getAuthorBySlug } from 'pages/api/authors'
+import MetaHead from 'components/MetaHead'
+const blog = require('nmbs.config.json')
 
 export default function Author({ author, posts }) {
   return (
     <>
+      <MetaHead title={`${author.title}${blog.seo.sep}${blog.authors.name}`} />
       <h1>{author.title}</h1>
       <ul>
         {posts.map(post => (
