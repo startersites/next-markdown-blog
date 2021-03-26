@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import { getPosts } from 'pages/api/posts'
+const blog = require('nmbs.config.json')
 
 export default function Home({ posts }) {
   return (
     <>
-      <h2>Posts</h2>
+      <h2>{blog.posts.name}</h2>
       <ul>
         {posts.map(post => (
           <li key={post.slug}>

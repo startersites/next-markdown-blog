@@ -3,6 +3,7 @@ import { getPosts, getPostBySlug } from 'pages/api/posts'
 import { getCategoryBySlug } from 'pages/api/categories'
 import { getAuthorBySlug } from 'pages/api/authors'
 import { getTagsBySlugs } from 'pages/api/tags'
+const blog = require('nmbs.config.json')
 
 export default function Post({ post, category, author, tags }) {
   return (
@@ -13,11 +14,11 @@ export default function Post({ post, category, author, tags }) {
         <Link href={`/authors/${author.slug}`}>{author.title}</Link>
       </p>
       <p>
-        <span>Category: </span>
+        <span>{blog.categories.name_singular}: </span>
         <Link href={`/${category.slug}`}>{category.title}</Link>
       </p>
       <p>
-        <span>Tags: </span>
+        <span>{tags.length > 1 ? blog.tags.name : blog.tags.name_singular}: </span>
         {tags.map(tag => (
           <Link href={`/tags/${tag.slug}`} key={tag.slug}>{tag.title}</Link>
         ))}
