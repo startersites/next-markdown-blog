@@ -6,14 +6,14 @@ export default function Header() {
   const home = router.pathname === '/' ? true : false
 
   return (
-    <header role="banner">
-      <HomeLinkWrapper home={home} wrapper={children => <h1>{children}</h1>}>
+    <header role="banner" className="flex flex-col font-sans items-center justify-between md:flex-row">
+      <HomeLinkWrapper home={home} wrapper={children => <h1 className="text-base">{children}</h1>}>
         <Link href="/">
-          Next Markdown Blog Starter
+          <a className="font-bold">Next Markdown Blog Starter</a>
         </Link>
       </HomeLinkWrapper>
-      <nav role="navigation" aria-label="main navigation">
-        <ul>
+      <nav role="navigation" aria-label="main navigation" className="mt-4 md:ml-4 md:mt-0">
+        <ul className="flex items-center">
           <NavLink href="/categories" title="Categories" />
           <NavLink href="/tags" title="Tags" />
           <NavLink href="/authors" title="Authors" />
@@ -25,7 +25,7 @@ export default function Header() {
 
 function NavLink({ href, title }) {
   return (
-    <li>
+    <li className="mx-2 md:ml-4 md:mx-0">
       <Link href={href}>{title}</Link>
     </li>
   )
