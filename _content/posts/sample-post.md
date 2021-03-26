@@ -1,10 +1,10 @@
 ---
 title: Sample Blog Post
-author: sample
+author: sample-author
 published_at: 2021-03-26-10-00
-category: sample
+category: sample-category
 tags:
-  - sample
+  - sample-tag
 ---
 
 ## Post Content
