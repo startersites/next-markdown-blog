@@ -1,34 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js Markdown Blog Starter
 
-## Getting Started
+A lightly opinionated, full featured Next.js blog managed through Git Workflows.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- Categories, Tags, and Authors
+- Full API
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Main Technologies Used
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- [Next.js](https://nextjs.org/) -
+- [NetlifyCMS](https://www.netlifycms.org/) -
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Deploying to Netlify
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+1. Deploy repo to Netlify
+2. Enable Netlify Identity on the site
+3. Under the Identity settings, enable Git Gateway
+4. Open your deployed site and navigate to `yoursite.app/admin`
+5. You should now be able to sign up and login to the admin
 
-## Learn More
+### Private admin
 
-To learn more about Next.js, take a look at the following resources:
+By default the admin side will allow anyone to signup and login. To change this:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Under Identity settings, change the registration preferences to invite-only
+2. Then in the Identity tab, invite yourself and any other desired admin users
+3. After you accept the invite and are redirected back to your site, add `/admin` to the end of your url but before the `#access-token`
+4. You should now be able to create an account and login
