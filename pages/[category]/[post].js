@@ -8,7 +8,10 @@ export default function Post({ post, category, author, tags }) {
   return (
     <>
       <h1>{post.title}</h1>
-      <p>by {author.title}</p>
+      <p>
+        <span>by: </span>
+        <Link href={`/authors/${author.slug}`}>{author.title}</Link>
+      </p>
       <p>
         <span>Category: </span>
         <Link href={`/${category.slug}`}>{category.title}</Link>
