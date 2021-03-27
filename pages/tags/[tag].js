@@ -21,25 +21,25 @@ export default function Tag({ tag, posts }) {
 }
 
 export async function getStaticPaths() {
-	const tags = getTags()
+  const tags = getTags()
 
-	return {
-		paths: tags.map((tag) => {
-			return {
-				params: {
-					tag: tag.slug,
-				},
-			};
-		}),
-		fallback: false,
-	};
+  return {
+    paths: tags.map((tag) => {
+      return {
+        params: {
+          tag: tag.slug,
+        },
+      }
+    }),
+    fallback: false,
+  }
 }
 
 export async function getStaticProps({ params }) {
   const tag = getTagBySlug(params.tag)
-	const posts = getPostsByTag(params.tag)
+  const posts = getPostsByTag(params.tag)
 
-	return {
-		props: { tag, posts },
-	};
+  return {
+    props: { tag, posts },
+  }
 }

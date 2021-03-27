@@ -10,8 +10,8 @@ export function getPostBySlug(slug, fields) {
 
   const fullPath = join(postsDirectory, `${realSlug}.md`)
 
-	const fileContents = fs.readFileSync(fullPath, 'utf8')
-	const { data, content } = matter(fileContents)
+  const fileContents = fs.readFileSync(fullPath, 'utf8')
+  const { data, content } = matter(fileContents)
 
   var theData = {}
 
@@ -26,7 +26,7 @@ export function getPostBySlug(slug, fields) {
       if (data[field]) {
         theData[field] = data[field]
       }
-    });
+    })
   } else {
     theData = {slug: realSlug, ...data, content: md.render(content)}
   }
@@ -41,10 +41,12 @@ export function getPosts(fields = []) {
 
   const slugs = fs.readdirSync(postsDirectory)
 
-	const content = slugs
-		.map((slug) => getPostBySlug(slug, fields))
-		// sort content by date in descending order
-		.sort((content1, content2) => (content1.published_at > content2.published_at ? '-1' : '1'))
+  const content = slugs
+    .map((slug) => getPostBySlug(slug, fields))
+  // sort content by date in descending order
+    .sort((content1, content2) => (
+      content1.published_at > content2.published_at ? '-1' : '1'
+    ))
 
   return content
 }
@@ -64,5 +66,5 @@ export default async function handler(req, res) {
   }
 
   const content = getPosts(fields)
-	res.status(200).json(content)
+  res.status(200).json(content)
 }

@@ -7,7 +7,9 @@ const blog = require('nmbs.config.json')
 export default function Category({ category, posts }) {
   return (
     <>
-      <MetaHead title={`${category.title}${blog.seo.sep}${blog.categories.name}`} />
+      <MetaHead
+        title={`${category.title}${blog.seo.sep}${blog.categories.name}`}
+      />
       <h1>{category.title}</h1>
       <ul>
         {posts.map(post => (
@@ -21,25 +23,25 @@ export default function Category({ category, posts }) {
 }
 
 export async function getStaticPaths() {
-	const categories = getCategories()
+  const categories = getCategories()
 
-	return {
-		paths: categories.map((category) => {
-			return {
-				params: {
-					category: category.slug,
-				},
-			};
-		}),
-		fallback: false,
-	};
+  return {
+    paths: categories.map((category) => {
+      return {
+        params: {
+          category: category.slug,
+        },
+      }
+    }),
+    fallback: false,
+  }
 }
 
 export async function getStaticProps({ params }) {
   const category = getCategoryBySlug(params.category)
-	const posts = getPostsByCategory(params.category)
+  const posts = getPostsByCategory(params.category)
 
-	return {
-		props: { category, posts },
-	};
+  return {
+    props: { category, posts },
+  }
 }

@@ -10,7 +10,7 @@ export default function Authors({ authors }) {
       <h1>{blog.authors.name}</h1>
       <ul>
         {authors.map(author => (
-          <li>
+          <li key={author.slug}>
             <Link href={`/authors/${author.slug}`}>{author.title}</Link>
           </li>
         ))}
@@ -20,9 +20,9 @@ export default function Authors({ authors }) {
 }
 
 export async function getStaticProps() {
-	const authors = getAuthors();
+  const authors = getAuthors()
 
-	return {
-		props: { authors },
-	};
+  return {
+    props: { authors },
+  }
 }

@@ -1,6 +1,7 @@
 {
   "name": "next-markdown-blog-starter",
   "version": "0.1.0",
+  "description": "A lightly opinionated, full-featured Next.js blog managed through Git Workflows with markdown files.",
   "repository": "https://github.com/morganmspencer/next-markdown-blog-starter.git",
   "author": "Morgan Spencer",
   "license": "MIT",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "autoprefixer": "^10.2.5",
     "eslint": "^7.22.0",
+    "eslint-plugin-react": "^7.23.1",
     "frontmatter-markdown-loader": "^3.6.2",
     "postcss": "^8.2.8",
     "tailwindcss": "^2.0.4"

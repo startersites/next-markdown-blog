@@ -23,8 +23,8 @@ export function getTagBySlug(slug, fields) {
 
   const fullPath = join(tagsDirectory, `${realSlug}.md`)
 
-	const fileContents = fs.readFileSync(fullPath, 'utf8')
-	const { data, content } = matter(fileContents)
+  const fileContents = fs.readFileSync(fullPath, 'utf8')
+  const { data, content } = matter(fileContents)
 
   var theData = {}
 
@@ -39,7 +39,7 @@ export function getTagBySlug(slug, fields) {
       if (data[field]) {
         theData[field] = data[field]
       }
-    });
+    })
   } else {
     theData = {slug: realSlug, ...data, content: md.render(content)}
   }
@@ -54,10 +54,12 @@ export function getTags(fields = []) {
 
   const slugs = fs.readdirSync(tagsDirectory)
 
-	const content = slugs
-		.map((slug) => getTagBySlug(slug, fields))
-		// sort content by date in descending order
-		.sort((content1, content2) => (content1.title > content2.title ? '-1' : '1'))
+  const content = slugs
+    .map((slug) => getTagBySlug(slug, fields))
+  // sort content by date in descending order
+    .sort((content1, content2) => (
+      content1.title > content2.title ? '-1' : '1'
+    ))
 
   return content
 }
@@ -77,5 +79,5 @@ export default async function handler(req, res) {
   }
 
   const content = getTags(fields)
-	res.status(200).json(content)
+  res.status(200).json(content)
 }

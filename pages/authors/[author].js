@@ -21,25 +21,25 @@ export default function Author({ author, posts }) {
 }
 
 export async function getStaticPaths() {
-	const authors = getAuthors()
+  const authors = getAuthors()
 
-	return {
-		paths: authors.map((author) => {
-			return {
-				params: {
-					author: author.slug,
-				},
-			};
-		}),
-		fallback: false,
-	};
+  return {
+    paths: authors.map((author) => {
+      return {
+        params: {
+          author: author.slug,
+        },
+      }
+    }),
+    fallback: false,
+  }
 }
 
 export async function getStaticProps({ params }) {
   const author = getAuthorBySlug(params.author)
-	const posts = getPostsByAuthor(params.author)
+  const posts = getPostsByAuthor(params.author)
 
-	return {
-		props: { author, posts },
-	};
+  return {
+    props: { author, posts },
+  }
 }

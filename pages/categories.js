@@ -10,7 +10,7 @@ export default function Categories({ categories }) {
       <h1>{blog.categories.name}</h1>
       <ul>
         {categories.map(category => (
-          <li>
+          <li key={category.slug}>
             <Link href={`/${category.slug}`}>{category.title}</Link>
           </li>
         ))}
@@ -20,9 +20,9 @@ export default function Categories({ categories }) {
 }
 
 export async function getStaticProps() {
-	const categories = getCategories();
+  const categories = getCategories()
 
-	return {
-		props: { categories },
-	};
+  return {
+    props: { categories },
+  }
 }
