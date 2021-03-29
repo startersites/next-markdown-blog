@@ -20,9 +20,9 @@ export default function Home({ posts }) {
 }
 
 export async function getStaticProps() {
-	const posts = getPosts()
+  const posts = getPosts()
 
-	return {
-		props: { posts },
-	};
+  return {
+    props: { posts },
+  }
 }

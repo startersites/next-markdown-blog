@@ -16,5 +16,5 @@ export default async function handler(req, res) {
   }
 
   const content = getCategoryBySlug(slug, fields)
-	res.status(200).json(content)
+  res.status(200).json(content)
 }

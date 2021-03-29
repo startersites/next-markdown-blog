@@ -20,7 +20,9 @@ export default function Post({ post, category, author, tags }) {
         <Link href={`/${category.slug}`}>{category.title}</Link>
       </p>
       <p>
-        <span>{tags.length > 1 ? blog.tags.name : blog.tags.name_singular}: </span>
+        <span>
+          {tags.length > 1 ? blog.tags.name : blog.tags.name_singular}:
+        </span>
         {tags.map(tag => (
           <Link href={`/tags/${tag.slug}`} key={tag.slug}>{tag.title}</Link>
         ))}
@@ -32,32 +34,32 @@ export default function Post({ post, category, author, tags }) {
 }
 
 export async function getStaticPaths() {
-	const posts = getPosts();
+  const posts = getPosts()
 
-	return {
-		paths: posts.map((post) => {
-			return {
-				params: {
-					post: post.slug,
-					category: post.category,
-				},
-			};
-		}),
-		fallback: false,
-	};
+  return {
+    paths: posts.map((post) => {
+      return {
+        params: {
+          post: post.slug,
+          category: post.category,
+        },
+      }
+    }),
+    fallback: false,
+  }
 }
 
 export async function getStaticProps({ params }) {
-	const category = getCategoryBySlug(params.category)
-	const post = getPostBySlug(params.post)
+  const category = getCategoryBySlug(params.category)
+  const post = getPostBySlug(params.post)
   const author = getAuthorBySlug(post.author)
   const tags = getTagsBySlugs(post.tags)
 
-	return {
-		props: {
-			post: {
-				...post,
-			},
+  return {
+    props: {
+      post: {
+        ...post,
+      },
       category: {
         ...category,
       },
@@ -65,6 +67,6 @@ export async function getStaticProps({ params }) {
         ...author
       },
       tags: tags,
-		},
-	};
+    },
+  }
 }

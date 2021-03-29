@@ -10,7 +10,7 @@ export default function Tags({ tags }) {
       <h1>{blog.tags.name}</h1>
       <ul>
         {tags.map(tag => (
-          <li>
+          <li key={tag.slug}>
             <Link href={`/tags/${tag.slug}`}>{tag.title}</Link>
           </li>
         ))}
@@ -20,9 +20,9 @@ export default function Tags({ tags }) {
 }
 
 export async function getStaticProps() {
-	const tags = getTags();
+  const tags = getTags()
 
-	return {
-		props: { tags },
-	};
+  return {
+    props: { tags },
+  }
 }

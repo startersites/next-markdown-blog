@@ -10,8 +10,8 @@ export function getAuthorBySlug(slug, fields) {
 
   const fullPath = join(authorsDirectory, `${realSlug}.md`)
 
-	const fileContents = fs.readFileSync(fullPath, 'utf8')
-	const { data, content } = matter(fileContents)
+  const fileContents = fs.readFileSync(fullPath, 'utf8')
+  const { data, content } = matter(fileContents)
 
   var theData = {}
 
@@ -26,7 +26,7 @@ export function getAuthorBySlug(slug, fields) {
       if (data[field]) {
         theData[field] = data[field]
       }
-    });
+    })
   } else {
     theData = {slug: realSlug, ...data, content: md.render(content)}
   }
@@ -41,10 +41,12 @@ export function getAuthors(fields = []) {
 
   const slugs = fs.readdirSync(authorsDirectory)
 
-	const content = slugs
-		.map((slug) => getAuthorBySlug(slug, fields))
-		// sort content by date in descending order
-		.sort((content1, content2) => (content1.title > content2.title ? '-1' : '1'))
+  const content = slugs
+    .map((slug) => getAuthorBySlug(slug, fields))
+  // sort content by date in descending order
+    .sort((content1, content2) => (
+      content1.title > content2.title ? '-1' : '1'
+    ))
 
   return content
 }
@@ -64,5 +66,5 @@ export default async function handler(req, res) {
   }
 
   const content = getAuthors(fields)
-	res.status(200).json(content)
+  res.status(200).json(content)
 }
