@@ -1,0 +1,29 @@
+{
+  "name": "create-nmbs-app",
+  "version": "0.1.0",
+  "author": "Morgan Spencer (https://github.com/morganmspencer)",
+  "license": "MIT",
+  "bin": "./dist/create-nmbs-app.js",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@babel/runtime-corejs3": "^7.13.10",
+    "axios": "^0.21.1",
+    "chalk": "^4.1.0",
+    "check-node-version": "^4.1.0",
+    "decompress": "^4.2.1",
+    "execa": "^5.0.0",
+    "fs-extra": "^9.1.0",
+    "listr": "^0.14.3",
+    "rimraf": "^3.0.2",
+    "tmp": "^0.2.1",
+    "yargs": "^16.2.0"
+  },
+  "scripts": {
+    "build": "yarn build:js",
+    "build:js": "babel src -d dist",
+    "prepublishOnly": "yarn cross-env NODE_ENV=production yarn build",
+    "build:watch": "nodemon --watch src --ignore dist --exec \"yarn build\""
+  }
+}
