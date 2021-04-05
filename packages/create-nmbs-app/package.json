@@ -23,7 +23,7 @@
   "scripts": {
     "build": "yarn build:js",
     "build:js": "babel src -d dist",
-    "prepublishOnly": "yarn cross-env NODE_ENV=production yarn build",
+    "prepublishOnly": "yarn build",
     "build:watch": "nodemon --watch src --ignore dist --exec \"yarn build\""
   }
 }
