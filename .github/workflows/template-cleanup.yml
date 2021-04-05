@@ -13,3 +13,20 @@ jobs:
     steps:
       - name: Fetch Sources
         uses: actions/checkout@v2
+      - name: Cleanup
+        run: |
+          # Cleanup
+          rm -rf \
+            .github \
+            packages
+      - name: Commit
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Template cleanup"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
