@@ -1,11 +1,14 @@
 import fs from 'fs'
 import { join } from 'path'
 import matter from 'gray-matter'
-var md = require('markdown-it')()
+
+import type { NextApiRequest, NextApiResponse } from 'next'
+
+const md = require('markdown-it')()
 
 export const postsDirectory = join(process.cwd(), '_content/posts')
 
-export function getPostBySlug(slug, fields) {
+export function getPostBySlug(slug: string, fields: string[] | undefined = undefined) {
   const realSlug = slug.replace(/\.md$/, '')
 
   const fullPath = join(postsDirectory, `${realSlug}.md`)
@@ -13,7 +16,7 @@ export function getPostBySlug(slug, fields) {
   const fileContents = fs.readFileSync(fullPath, 'utf8')
   const { data, content } = matter(fileContents)
 
-  var theData = {}
+  var theData: MarkdownFileObject = {}
 
   if (fields !== undefined && fields.length) {
     fields.forEach((field) => {
@@ -34,7 +37,7 @@ export function getPostBySlug(slug, fields) {
   return theData
 }
 
-export function getPosts(fields = []) {
+export function getPosts(fields: string[] | undefined = undefined) {
   if (!fs.existsSync(postsDirectory)) {
     return []
   }
@@ -44,25 +47,23 @@ export function getPosts(fields = []) {
   const content = slugs
     .map((slug) => getPostBySlug(slug, fields))
   // sort content by date in descending order
-    .sort((content1, content2) => (
-      content1.published_at > content2.published_at ? '-1' : '1'
+    .sort((a, b) => (
+      a.published_at > b.published_at ? -1 : 1
     ))
 
   return content
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
     res.status(405).end()
   }
 
-  const queryFields = req.query.fields
+  const queryFields = req.query.fields.toString()
 
-  let fields
+  const fields = []
   if (queryFields) {
-    fields = queryFields.split(',')
-  } else {
-    fields = []
+    fields.push(...queryFields.split(','))
   }
 
   const content = getPosts(fields)

@@ -1,9 +1,14 @@
 import Link from 'next/link'
 import { getPosts } from 'pages/api/posts'
 import MetaHead from 'components/MetaHead'
+import { GetStaticProps } from 'next'
 const blog = require('nmbs.config.json')
 
-export default function Home({ posts }) {
+export default function Home({
+  posts,
+}: {
+  posts: MarkdownFileObject[]
+}) {
   return (
     <>
       <MetaHead />
@@ -19,7 +24,7 @@ export default function Home({ posts }) {
   )
 }
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const posts = getPosts()
 
   return {

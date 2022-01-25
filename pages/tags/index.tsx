@@ -1,9 +1,16 @@
 import Link from 'next/link'
 import { getTags } from 'pages/api/tags'
 import MetaHead from 'components/MetaHead'
+
+import { GetStaticProps } from 'next'
+
 const blog = require('nmbs.config.json')
 
-export default function Tags({ tags }) {
+export default function Tags({
+  tags,
+}: {
+  tags: MarkdownFileObject[]
+}) {
   return (
     <>
       <MetaHead title={`${blog.tags.name}`} />
@@ -19,7 +26,7 @@ export default function Tags({ tags }) {
   )
 }
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const tags = getTags()
 
   return {

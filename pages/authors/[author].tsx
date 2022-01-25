@@ -2,9 +2,18 @@ import Link from 'next/link'
 import { getPostsByAuthor } from 'pages/api/authors/[author]/posts'
 import { getAuthors, getAuthorBySlug } from 'pages/api/authors'
 import MetaHead from 'components/MetaHead'
+
+import { GetStaticProps, GetStaticPaths } from 'next'
+
 const blog = require('nmbs.config.json')
 
-export default function Author({ author, posts }) {
+export default function Author({
+  author,
+  posts,
+}: {
+  author: MarkdownFileObject,
+  posts: MarkdownFileObject[],
+}) {
   return (
     <>
       <MetaHead title={`${author.title}${blog.seo.sep}${blog.authors.name}`} />
@@ -20,7 +29,7 @@ export default function Author({ author, posts }) {
   )
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = () => {
   const authors = getAuthors()
 
   return {
@@ -35,9 +44,18 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params }) {
-  const author = getAuthorBySlug(params.author)
-  const posts = getPostsByAuthor(params.author)
+export const getStaticProps: GetStaticProps = async (context) => {
+  const params = context.params
+
+  let author: MarkdownFileObject
+  const posts: MarkdownFileObject[] = []
+
+  if (params?.author) {
+    author = getAuthorBySlug(params.author.toString())
+    posts.push(...getPostsByAuthor(params.author.toString()))
+  } else {
+    author = {}
+  }
 
   return {
     props: { author, posts },

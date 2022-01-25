@@ -2,7 +2,15 @@ import Head from "next/head"
 import { useRouter } from "next/router"
 const blog = require('nmbs.config.json')
 
-export default function MetaHead(props) {
+interface MetaHeadProps {
+  title?: string
+  description?: string
+  type?: string
+  image?: string
+  authorTwitter?: string
+}
+
+export default function MetaHead(props: MetaHeadProps) {
   const router = useRouter()
 
   const metaTitle = props.title !== undefined

@@ -1,12 +1,15 @@
 import fs from 'fs'
 import { join } from 'path'
 import matter from 'gray-matter'
-var md = require('markdown-it')()
+
+import type { NextApiRequest, NextApiResponse } from 'next'
+
+const md = require('markdown-it')()
 
 export const tagsDirectory = join(process.cwd(), '_content/tags')
 
-export function getTagsBySlugs(slugs = [], fields = []) {
-  var tags = []
+export function getTagsBySlugs(slugs: string[], fields: string[] | undefined = undefined) {
+  const tags: MarkdownFileObject[] = []
 
   if (slugs !== undefined && slugs.length) {
     slugs.forEach((slug) => {
@@ -18,7 +21,7 @@ export function getTagsBySlugs(slugs = [], fields = []) {
   return tags
 }
 
-export function getTagBySlug(slug, fields) {
+export function getTagBySlug(slug: string, fields: string[] | undefined = undefined) {
   const realSlug = slug.replace(/\.md$/, '')
 
   const fullPath = join(tagsDirectory, `${realSlug}.md`)
@@ -26,7 +29,7 @@ export function getTagBySlug(slug, fields) {
   const fileContents = fs.readFileSync(fullPath, 'utf8')
   const { data, content } = matter(fileContents)
 
-  var theData = {}
+  var theData: MarkdownFileObject = {}
 
   if (fields !== undefined && fields.length) {
     fields.forEach((field) => {
@@ -47,7 +50,7 @@ export function getTagBySlug(slug, fields) {
   return theData
 }
 
-export function getTags(fields = []) {
+export function getTags(fields: string[] | undefined = undefined) {
   if (!fs.existsSync(tagsDirectory)) {
     return []
   }
@@ -57,25 +60,28 @@ export function getTags(fields = []) {
   const content = slugs
     .map((slug) => getTagBySlug(slug, fields))
   // sort content by date in descending order
-    .sort((content1, content2) => (
-      content1.title > content2.title ? '-1' : '1'
-    ))
+    .sort((a, b) => {
+      if (a.title && b.title) {
+        return a.title > b.title ? -1 : 1
+      }
+
+      return 0
+    })
 
   return content
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
     res.status(405).end()
   }
 
-  const queryFields = req.query.fields
+  const queryFields = req.query.fields.toString()
 
-  let fields
+  const fields: string[] = []
+
   if (queryFields) {
-    fields = queryFields.split(',')
-  } else {
-    fields = []
+    fields.push(...queryFields.split(','))
   }
 
   const content = getTags(fields)

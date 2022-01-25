@@ -2,9 +2,18 @@ import Link from 'next/link'
 import { getPostsByCategory } from 'pages/api/categories/[category]/posts'
 import { getCategories, getCategoryBySlug } from 'pages/api/categories'
 import MetaHead from 'components/MetaHead'
+
+import { GetStaticProps, GetStaticPaths } from 'next'
+
 const blog = require('nmbs.config.json')
 
-export default function Category({ category, posts }) {
+export default function Category({
+  category,
+  posts,
+}: {
+  category: RequiredMarkdownObject
+  posts: RequiredMarkdownObject[]
+}) {
   return (
     <>
       <MetaHead
@@ -22,7 +31,7 @@ export default function Category({ category, posts }) {
   )
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = () => {
   const categories = getCategories()
 
   return {
@@ -37,9 +46,18 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params }) {
-  const category = getCategoryBySlug(params.category)
-  const posts = getPostsByCategory(params.category)
+export const getStaticProps: GetStaticProps = async (context) => {
+  const params = context.params
+
+  let category: MarkdownFileObject
+  const posts: MarkdownFileObject[] = []
+
+  if (params?.category) {
+    category = getCategoryBySlug(params.category.toString())
+    posts.push(...getPostsByCategory(params.category.toString()))
+  } else {
+    category = {}
+  }
 
   return {
     props: { category, posts },

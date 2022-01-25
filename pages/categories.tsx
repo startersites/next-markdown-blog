@@ -3,7 +3,11 @@ import { getCategories } from 'pages/api/categories'
 import MetaHead from 'components/MetaHead'
 const blog = require('nmbs.config.json')
 
-export default function Categories({ categories }) {
+export default function Categories({
+  categories,
+}: {
+  categories: RequiredMarkdownObject[]
+}) {
   return (
     <>
       <MetaHead title={`${blog.categories.name}`} />

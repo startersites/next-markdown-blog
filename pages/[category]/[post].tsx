@@ -4,9 +4,22 @@ import { getCategoryBySlug } from 'pages/api/categories'
 import { getAuthorBySlug } from 'pages/api/authors'
 import { getTagsBySlugs } from 'pages/api/tags'
 import MetaHead from 'components/MetaHead'
+
+import { GetStaticProps, GetStaticPaths } from 'next'
+
 const blog = require('nmbs.config.json')
 
-export default function Post({ post, category, author, tags }) {
+export default function Post({
+  post,
+  category,
+  author,
+  tags,
+}: {
+  post: MarkdownFileObject,
+  category: MarkdownFileObject,
+  author: MarkdownFileObject,
+  tags: MarkdownFileObject[],
+}) {
   return (
     <>
       <MetaHead title={`${post.title}`} />
@@ -27,13 +40,13 @@ export default function Post({ post, category, author, tags }) {
           <Link href={`/tags/${tag.slug}`} key={tag.slug}>{tag.title}</Link>
         ))}
       </p>
-      <div dangerouslySetInnerHTML={{__html: post.content}} />
+      <div dangerouslySetInnerHTML={post?.content ? { __html: post.content } : undefined } />
     </>
 
   )
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = () => {
   const posts = getPosts()
 
   return {
@@ -49,24 +62,43 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params }) {
-  const category = getCategoryBySlug(params.category)
-  const post = getPostBySlug(params.post)
-  const author = getAuthorBySlug(post.author)
-  const tags = getTagsBySlugs(post.tags)
+export const getStaticProps: GetStaticProps = async (context) => {
+  const params = context.params
+
+  let category: MarkdownFileObject,
+      post: MarkdownFileObject,
+      author: MarkdownFileObject
+
+  const tags: MarkdownFileObject[] = []
+
+  if (params?.category) {
+    category = getCategoryBySlug(params.category.toString())
+  } else {
+    category = {}
+  }
+
+  if (params?.post) {
+    post = getPostBySlug(params.post.toString())
+  } else {
+    post = {}
+  }
+
+  if (post?.author) {
+    author = getAuthorBySlug(post.author.toString())
+  } else {
+    author = {}
+  }
+
+  if (post && post.tags && Object.keys(post).length) {
+    tags.push(...getTagsBySlugs(post.tags))
+  }
 
   return {
     props: {
-      post: {
-        ...post,
-      },
-      category: {
-        ...category,
-      },
-      author: {
-        ...author
-      },
-      tags: tags,
+      post,
+      category,
+      author,
+      tags,
     },
   }
 }

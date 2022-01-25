@@ -24,7 +24,12 @@ export default function Header() {
   )
 }
 
-function NavLink({ href, title }) {
+interface NavLinkProps {
+  href: string
+  title: string
+}
+
+function NavLink({ href, title }: NavLinkProps) {
   return (
     <li className="mx-2 md:ml-4 md:mx-0">
       <Link href={href}>{title}</Link>
@@ -32,6 +37,12 @@ function NavLink({ href, title }) {
   )
 }
 
-function HomeLinkWrapper ({home, wrapper, children}) {
+interface HomeLinkWrapperProps {
+  home: boolean
+  wrapper: (children: JSX.Element) => JSX.Element
+  children: JSX.Element
+}
+
+function HomeLinkWrapper ({home, wrapper, children}: HomeLinkWrapperProps) {
   return home ? wrapper(children) : children
 }

@@ -1,9 +1,16 @@
 import Link from 'next/link'
 import { getAuthors } from 'pages/api/authors'
 import MetaHead from 'components/MetaHead'
+
+import { GetStaticProps } from 'next'
+
 const blog = require('nmbs.config.json')
 
-export default function Authors({ authors }) {
+export default function Authors({
+  authors
+}: {
+  authors: MarkdownFileObject[]
+}) {
   return (
     <>
       <MetaHead title={`${blog.authors.name}`} />
@@ -19,7 +26,7 @@ export default function Authors({ authors }) {
   )
 }
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const authors = getAuthors()
 
   return {

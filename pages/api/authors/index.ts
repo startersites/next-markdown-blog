@@ -1,11 +1,14 @@
 import fs from 'fs'
 import { join } from 'path'
 import matter from 'gray-matter'
-var md = require('markdown-it')()
+
+import type { NextApiRequest, NextApiResponse } from 'next'
+
+const md = require('markdown-it')()
 
 const authorsDirectory = join(process.cwd(), '_content/authors')
 
-export function getAuthorBySlug(slug, fields) {
+export function getAuthorBySlug(slug: string, fields: string[] | undefined = undefined) {
   const realSlug = slug.replace(/\.md$/, '')
 
   const fullPath = join(authorsDirectory, `${realSlug}.md`)
@@ -13,7 +16,7 @@ export function getAuthorBySlug(slug, fields) {
   const fileContents = fs.readFileSync(fullPath, 'utf8')
   const { data, content } = matter(fileContents)
 
-  var theData = {}
+  var theData: MarkdownFileObject = {}
 
   if (fields !== undefined && fields.length) {
     fields.forEach((field) => {
@@ -34,7 +37,7 @@ export function getAuthorBySlug(slug, fields) {
   return theData
 }
 
-export function getAuthors(fields = []) {
+export function getAuthors(fields: string[] | undefined = undefined) {
   if (!fs.existsSync(authorsDirectory)) {
     return []
   }
@@ -43,26 +46,28 @@ export function getAuthors(fields = []) {
 
   const content = slugs
     .map((slug) => getAuthorBySlug(slug, fields))
-  // sort content by date in descending order
-    .sort((content1, content2) => (
-      content1.title > content2.title ? '-1' : '1'
-    ))
+    .sort((a, b) => {
+      if (a.title && b.title) {
+        return a.title > b.title ? -1 : 1
+      }
+
+      return 0
+    })
 
   return content
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
     res.status(405).end()
   }
 
-  const queryFields = req.query.fields
+  const queryFields = req.query.fields.toString()
 
-  let fields
+  const fields: string[] = []
+
   if (queryFields) {
-    fields = queryFields.split(',')
-  } else {
-    fields = []
+    fields.push(...queryFields.split(','))
   }
 
   const content = getAuthors(fields)
