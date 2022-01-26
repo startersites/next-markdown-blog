@@ -9,6 +9,7 @@ export default function Header() {
       </Link>
       <nav role="navigation" aria-label="main navigation" className="mt-2 md:ml-4 md:mt-0">
         <ul className="flex items-center">
+          <NavLink href="/search" title="Search" />
           <NavLink href="/categories" title={blog.categories.name} />
           <NavLink href="/tags" title={blog.tags.name} />
           <NavLink href="/authors" title={blog.authors.name} />
