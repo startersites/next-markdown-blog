@@ -13,7 +13,7 @@ export default function Search({
   const [searchValue, setSearchValue] = useState('')
   const [searchItems, setSearchItems] = useState(search)
 
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     inputRef.current?.focus()
