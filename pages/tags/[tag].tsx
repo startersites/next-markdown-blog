@@ -12,13 +12,15 @@ export default function Tag({
   tag: ObjectWithCategory,
 }) {
   return (
-    <PageLayout title={`${tag.title}`} metaTitle={`${tag.title}${blog.seo.sep}${blog.tags.name}`}>
+    <PageLayout title={`${blog.tags.name_singular}: ${tag.title}`} metaTitle={`${tag.title}${blog.seo.sep}${blog.tags.name}`}>
       <section className="feed-wrapper">
         {tag.posts.map(post => (
           <FeedItem
             key={post.slug}
             title={`${post.title}`}
             link={`/${post.category.slug}/${post.slug}`}
+            image={post.thumbnail}
+            type={post.category.title}
             excerpt={post.excerpt}
           />
         ))}

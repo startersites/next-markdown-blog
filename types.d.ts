@@ -15,6 +15,7 @@ interface PostObjectBase extends MarkdownFileBase {
   author: string
   published_at: string
   excerpt: string
+  thumbnail: string
 }
 
 interface PostObject extends PostObjectBase {
@@ -22,8 +23,14 @@ interface PostObject extends PostObjectBase {
   tags: string[]
 }
 
+interface AuthorObjectBase extends MarkdownFileBase {
+  image: string
+  twitter: string
+  short_bio: string
+}
+
 interface NestedPostObject extends PostObjectBase {
-  author: MarkdownFileBase
+  author: AuthorObjectBase
   category: MarkdownFileBase
   tags: MarkdownFileBase[]
 }

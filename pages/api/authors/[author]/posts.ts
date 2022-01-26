@@ -6,16 +6,16 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 export function getPostsByAuthor(author: string, fields: string[] | undefined = undefined, nested = false) {
   const slugs = fs.readdirSync(postsDirectory)
 
-  const spreadFields = fields && fields.length > 0 ? [...fields, 'title', 'category', 'author', 'excerpt'] : []
+  const spreadFields = fields && fields.length > 0 ? [...fields, 'title', 'category', 'author', 'excerpt', 'thumbnail'] : []
 
   const content = slugs
-    .map((slug) => getPostBySlug(slug, spreadFields))
+    .map((slug) => getPostBySlug(slug, spreadFields, nested))
     .sort((a, b) => (
       a.publish_date > b.publish_date ? -1 : 1
     ))
 
   content.forEach((post, i) => {
-    if (post.author !== author) {
+    if (post.author !== author && post.author.slug !== author) {
       content.splice(i, 1)
     } else {
       delete post.author

@@ -17,7 +17,7 @@ export function getAuthorBySlug(slug: string, fields: string[] | undefined = und
   const fileContents = fs.readFileSync(fullPath, 'utf8')
   const { data, content } = matter(fileContents)
 
-  const posts = nested && (!fields || fields.length === 0 || fields.includes('posts')) ? getPostsByAuthor(realSlug, ['title', 'category', 'excerpt']) : undefined
+  const posts = nested && (!fields || fields.length === 0 || fields.includes('posts')) ? getPostsByAuthor(realSlug, ['title', 'category', 'excerpt', 'thumbnail'], true) : undefined
 
   const theData: { [x: string]: any } = {
     ...data,

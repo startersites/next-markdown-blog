@@ -12,13 +12,15 @@ export default function Author({
   author: ObjectWithCategory,
 }) {
   return (
-    <PageLayout title={`${author.title}`} metaTitle={`${author.title}${blog.seo.sep}${blog.authors.name}`}>
+    <PageLayout title={`${blog.authors.name_singular}: ${author.title}`} metaTitle={`${author.title}${blog.seo.sep}${blog.authors.name}`}>
       <section className="feed-wrapper">
         {author.posts.map(post => (
           <FeedItem
             key={post.slug}
             title={`${post.title}`}
-            link={`/${post.category}/${post.slug}`}
+            link={`/${post.category.slug}/${post.slug}`}
+            image={post.thumbnail}
+            type={post.category.title}
             excerpt={post.excerpt}
           />
         ))}

@@ -12,13 +12,14 @@ export default function Category({
   category: ObjectWithPosts
 }) {
   return (
-    <PageLayout title={`${category.title}`} metaTitle={`${category.title}${blog.seo.sep}${blog.categories.name}`}>
+    <PageLayout title={`${blog.categories.name_singular}: ${category.title}`} metaTitle={`${category.title}${blog.seo.sep}${blog.categories.name}`}>
       <section className="feed-wrapper">
         {category?.posts.map(post => (
           <FeedItem
             key={post.slug}
             title={`${post.title}`}
             link={`/${category.slug}/${post.slug}`}
+            image={post.thumbnail}
             excerpt={post.excerpt}
           />
         ))}

@@ -14,11 +14,15 @@ export default function Home({
   return (
     <PageLayout title={blog.posts.name}>
       <section className="feed-wrapper">
-        {posts.map(post => (
+        {posts.map((post, i) => (
           <FeedItem
             key={post.slug}
             title={`${post.title}`}
             link={`/${post.category.slug}/${post.slug}`}
+            image={post.thumbnail}
+            type={post.category.title}
+            excerpt={post.excerpt}
+            feature={i === 0 ? true : false}
           />
         ))}
       </section>

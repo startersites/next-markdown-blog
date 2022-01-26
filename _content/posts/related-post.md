@@ -1,8 +1,8 @@
 ---
-title: Sample Blog Post
+title: Sample Related Post
 author: sample-author
-published_at: Wednesday, January 26, 2022 8:30 PM
-thumbnail: /images/posts/sample-post/thumbnail.jpg
+published_at: Wednesday, January 26, 2022 8:25 PM
+thumbnail: /images/posts/related-post/thumbnail.jpg
 category: sample-category
 tags:
   - sample-tag

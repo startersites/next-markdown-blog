@@ -1,8 +1,8 @@
 backend:
   name: git-gateway
   branch: main
-media_folder: public/images/uploads
-public_folder: images/uploads
+media_folder: public/images
+public_folder: images
 publish_mode: editorial_workflow
 collections:
   - name: 'posts'
@@ -19,9 +19,15 @@ collections:
       - name: 'published_at'
         label: 'Published At'
         widget: 'datetime'
-        format: 'YYYY-MM-DD-HH-mm'
+        format: 'LLLL'
         date_format: 'dddd, MMMM D, YYYY'
         time_format: 'h:mm a'
+      - label: "Featured Image"
+        name: "thumbnail"
+        widget: "image"
+        media_folder: /public/images/posts/{{ slug }}
+        choose_url: true
+        allow_multiple: false
       - name: 'author'
         label: 'Author'
         widget: 'relation'
@@ -50,6 +56,8 @@ collections:
       - name: 'body'
         label: 'Body'
         widget: 'markdown'
+        buttons: ['bold', 'italic', 'code', 'link', 'heading-two', 'heading-three', 'heading-four', 'heading-five', 'heading-six', 'quote', 'bulleted-list', 'numbered-list']
+        sanitize_preview: true
   - name: 'categories'
     label: 'Categories'
     label_singular: 'Category'
@@ -64,6 +72,8 @@ collections:
       - name: 'body'
         label: 'Body'
         widget: 'markdown'
+        buttons: ['bold', 'italic', 'code', 'link', 'heading-two', 'heading-three', 'heading-four', 'heading-five', 'heading-six', 'quote', 'bulleted-list', 'numbered-list']
+        sanitize_preview: true
   - name: 'tags'
     label: 'Tags'
     label_singular: 'Tag'
@@ -78,6 +88,8 @@ collections:
       - name: 'body'
         label: 'Body'
         widget: 'markdown'
+        buttons: ['bold', 'italic', 'code', 'link', 'heading-two', 'heading-three', 'heading-four', 'heading-five', 'heading-six', 'quote', 'bulleted-list', 'numbered-list']
+        sanitize_preview: true
   - name: 'authors'
     label: 'Authors'
     label_singular: 'Author'
@@ -92,6 +104,12 @@ collections:
       - name: 'twitter'
         required: false
         label: 'Twitter Handle'
+      - label: "Profile Image"
+        name: "image"
+        widget: "image"
+        media_folder: /public/images/authors/{{ slug }}
+        choose_url: true
+        allow_multiple: false
       - name: 'short_bio'
         required: false
         label: 'Short Bio'
@@ -99,4 +117,6 @@ collections:
       - name: 'body'
         label: 'Bio'
         widget: 'markdown'
+        buttons: ['bold', 'italic', 'code', 'link', 'heading-two', 'heading-three', 'heading-four', 'heading-five', 'heading-six', 'quote', 'bulleted-list', 'numbered-list']
+        sanitize_preview: true
 
