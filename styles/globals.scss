@@ -49,6 +49,16 @@ a {
   @apply underline hover:no-underline;
 }
 
+#post-content {
+  > *:not(:last-child) {
+    @apply mb-6;
+  }
+}
+
+.feed-wrapper {
+  @apply grid grid-cols-1 gap-6;
+}
+
 /* Write your base styles here */
 
 @tailwind components;

@@ -10,7 +10,7 @@ export default function PageHeader({
   metaTitle,
 }: PageHeaderProps) {
   return (
-    <header>
+    <header className="mb-8">
       <MetaHead title={metaTitle || title} />
       <h1>{title}</h1>
     </header>

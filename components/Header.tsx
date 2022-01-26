@@ -1,17 +1,13 @@
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 const blog = require('nmbs.config.json')
 
 export default function Header() {
-  const router = useRouter()
-  const home = router.pathname === '/' ? true : false
-
   return (
-    <header role="banner" className="flex flex-col font-sans items-center justify-between md:flex-row">
+    <header role="banner" className="flex flex-col px-wrap py-2 font-sans items-center justify-between md:flex-row">
       <Link href="/">
-        <a className="font-bold">{blog.name}</a>
+        <a className="font-bold text-xl">{blog.name}</a>
       </Link>
-      <nav role="navigation" aria-label="main navigation" className="mt-4 md:ml-4 md:mt-0">
+      <nav role="navigation" aria-label="main navigation" className="mt-2 md:ml-4 md:mt-0">
         <ul className="flex items-center">
           <NavLink href="/categories" title={blog.categories.name} />
           <NavLink href="/tags" title={blog.tags.name} />
@@ -33,14 +29,4 @@ function NavLink({ href, title }: NavLinkProps) {
       <Link href={href}>{title}</Link>
     </li>
   )
-}
-
-interface HomeLinkWrapperProps {
-  home: boolean
-  wrapper: (children: JSX.Element) => JSX.Element
-  children: JSX.Element
-}
-
-function HomeLinkWrapper ({home, wrapper, children}: HomeLinkWrapperProps) {
-  return home ? wrapper(children) : children
 }

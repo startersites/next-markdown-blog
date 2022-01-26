@@ -13,12 +13,13 @@ export default function Author({
 }) {
   return (
     <PageLayout title={`${author.title}`} metaTitle={`${author.title}${blog.seo.sep}${blog.authors.name}`}>
-      <section>
+      <section className="feed-wrapper">
         {author.posts.map(post => (
           <FeedItem
             key={post.slug}
             title={`${post.title}`}
-            link={`/${post.category.slug}/${post.slug}`}
+            link={`/${post.category}/${post.slug}`}
+            excerpt={post.excerpt}
           />
         ))}
       </section>

@@ -11,7 +11,7 @@ export default function Post({
   return (
     <article>
       <PostHeader title={`${post.title}`} category={post.category} author={post.author} tags={post.tags} />
-      <div dangerouslySetInnerHTML={post?.content ? { __html: post.content } : undefined } />
+      <div id="post-content" dangerouslySetInnerHTML={post?.content ? { __html: post.content } : undefined } />
     </article>
   )
 }

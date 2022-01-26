@@ -19,31 +19,33 @@ export default function PostHeader({
   tags,
 }: PostHeaderProps) {
   return (
-    <header>
+    <header className="mb-8 font-sans">
       <MetaHead title={metaTitle || title} />
       <h1>{title}</h1>
-      {author && (
-        <p>
-          <span>by: </span>
-          <Link href={`/authors/${author.slug}`}>{author.title}</Link>
-        </p>
-      )}
-      {category && (
-        <p>
-          <span>{blog.categories.name_singular}: </span>
-          <Link href={`/${category.slug}`}>{category.title}</Link>
-        </p>
-      )}
-      {tags && tags.length > 0 &&(
-        <p>
-          <span>
-            {tags.length > 1 ? blog.tags.name : blog.tags.name_singular}:{' '}
-          </span>
-          {tags.map(tag => (
-            <Link href={`/tags/${tag.slug}`} key={tag.slug}>{tag.title}</Link>
-          ))}
-        </p>
-      )}
+      <div className="text-base mt-2">
+        {author && (
+          <p>
+            <span>Author: </span>
+            <Link href={`/authors/${author.slug}`}>{author.title}</Link>
+          </p>
+        )}
+        {category && (
+          <p>
+            <span>{blog.categories.name_singular}: </span>
+            <Link href={`/${category.slug}`}>{category.title}</Link>
+          </p>
+        )}
+        {tags && tags.length > 0 &&(
+          <p>
+            <span>
+              {tags.length > 1 ? blog.tags.name : blog.tags.name_singular}:{' '}
+            </span>
+            {tags.map(tag => (
+              <Link href={`/tags/${tag.slug}`} key={tag.slug}>{tag.title}</Link>
+            ))}
+          </p>
+        )}
+      </div>
     </header>
   )
 }

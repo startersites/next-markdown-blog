@@ -13,7 +13,7 @@ export default function Tags({
 }) {
   return (
     <PageLayout title={blog.tags.name}>
-      <section>
+      <section className="feed-wrapper">
         {tags.map(tag => (
           <FeedItem
             key={tag.slug}

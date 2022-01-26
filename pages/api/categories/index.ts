@@ -17,7 +17,7 @@ export function getCategoryBySlug(slug: string, fields: string[] | undefined = u
   const fileContents = fs.readFileSync(fullPath, 'utf8')
   const { data } = matter(fileContents)
 
-  const posts = nested && (!fields || fields.length === 0 || fields.includes('posts')) ? getPostsByCategory(realSlug, ['title', 'category']) : undefined
+  const posts = nested && (!fields || fields.length === 0 || fields.includes('posts')) ? getPostsByCategory(realSlug, ['title', 'category', 'excerpt']) : undefined
 
   const theData: { [x: string]: any } = {
     ...data,

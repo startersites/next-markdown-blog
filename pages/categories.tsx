@@ -13,7 +13,7 @@ export default function Categories({
 }) {
   return (
     <PageLayout title={blog.categories.name}>
-      <section>
+      <section className="feed-wrapper">
         {categories.map(category => (
           <FeedItem
             key={category.slug}

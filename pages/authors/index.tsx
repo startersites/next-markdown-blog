@@ -13,7 +13,7 @@ export default function Authors({
 }) {
   return (
     <PageLayout title={`${blog.authors.name}`}>
-      <section>
+      <section className="feed-wrapper">
         {authors.map(author => (
           <FeedItem
             key={author.slug}

@@ -6,8 +6,10 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 export function getPostsByAuthor(author: string, fields: string[] | undefined = undefined, nested = false) {
   const slugs = fs.readdirSync(postsDirectory)
 
+  const spreadFields = fields && fields.length > 0 ? [...fields, 'title', 'category', 'author', 'excerpt'] : []
+
   const content = slugs
-    .map((slug) => getPostBySlug(slug, fields))
+    .map((slug) => getPostBySlug(slug, spreadFields))
     .sort((a, b) => (
       a.publish_date > b.publish_date ? -1 : 1
     ))

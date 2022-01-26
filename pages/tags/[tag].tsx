@@ -13,12 +13,13 @@ export default function Tag({
 }) {
   return (
     <PageLayout title={`${tag.title}`} metaTitle={`${tag.title}${blog.seo.sep}${blog.tags.name}`}>
-      <section>
+      <section className="feed-wrapper">
         {tag.posts.map(post => (
           <FeedItem
             key={post.slug}
             title={`${post.title}`}
             link={`/${post.category.slug}/${post.slug}`}
+            excerpt={post.excerpt}
           />
         ))}
       </section>

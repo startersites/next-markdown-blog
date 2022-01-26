@@ -13,7 +13,7 @@ export default function Home({
 }) {
   return (
     <PageLayout title={blog.posts.name}>
-      <section>
+      <section className="feed-wrapper">
         {posts.map(post => (
           <FeedItem
             key={post.slug}
