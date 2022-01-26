@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { getPosts, getPostBySlug } from 'pages/api/posts'
 import PostHeader from 'components/PostHeader'
 
@@ -14,7 +13,6 @@ export default function Post({
       <PostHeader title={`${post.title}`} category={post.category} author={post.author} tags={post.tags} />
       <div dangerouslySetInnerHTML={post?.content ? { __html: post.content } : undefined } />
     </article>
-
   )
 }
 

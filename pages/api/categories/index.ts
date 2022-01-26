@@ -5,7 +5,7 @@ import { getPostsByCategory } from './[category]/posts'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-const md = require('markdown-it')()
+// const md = require('markdown-it')()
 
 const categoriesDirectory = join(process.cwd(), '_content/categories')
 

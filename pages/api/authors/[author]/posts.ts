@@ -12,7 +12,6 @@ export function getPostsByAuthor(author: string, fields: string[] | undefined = 
       a.publish_date > b.publish_date ? -1 : 1
     ))
 
-
   content.forEach((post, i) => {
     if (post.author !== author) {
       content.splice(i, 1)
