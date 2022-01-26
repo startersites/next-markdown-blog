@@ -1,5 +1,5 @@
 ---
-title: First Lastname
+title: Morgan Spencer
 twitter: morganmspencer
 image: /images/authors/sample-author.jpg
 short_bio: Nisi est sit amet facilisis magna etiam tempor. Eu lobortis elementum nibh tellus molestie nunc.
