@@ -1,29 +1,32 @@
-import Link from 'next/link'
 import { getCategories } from 'pages/api/categories'
-import MetaHead from 'components/MetaHead'
+import PageLayout from 'components/PageLayout'
+import FeedItem from 'components/FeedItem'
+
+import type { GetStaticProps } from 'next'
+
 const blog = require('nmbs.config.json')
 
 export default function Categories({
   categories,
 }: {
-  categories: RequiredMarkdownObject[]
+  categories: MarkdownFileBase[]
 }) {
   return (
-    <>
-      <MetaHead title={`${blog.categories.name}`} />
-      <h1>{blog.categories.name}</h1>
-      <ul>
+    <PageLayout title={blog.categories.name}>
+      <section>
         {categories.map(category => (
-          <li key={category.slug}>
-            <Link href={`/${category.slug}`}>{category.title}</Link>
-          </li>
+          <FeedItem
+            key={category.slug}
+            title={`${category.title}`}
+            link={`/${category.slug}`}
+          />
         ))}
-      </ul>
-    </>
+      </section>
+    </PageLayout>
   )
 }
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const categories = getCategories()
 
   return {

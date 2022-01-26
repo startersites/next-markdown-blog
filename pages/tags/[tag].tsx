@@ -1,7 +1,6 @@
-import Link from 'next/link'
-import { getPostsByTag } from 'pages/api/tags/[tag]/posts'
 import { getTags, getTagBySlug } from 'pages/api/tags'
-import MetaHead from 'components/MetaHead'
+import PageLayout from 'components/PageLayout'
+import FeedItem from 'components/FeedItem'
 
 import { GetStaticProps, GetStaticPaths } from 'next'
 
@@ -9,23 +8,21 @@ const blog = require('nmbs.config.json')
 
 export default function Tag({
   tag,
-  posts,
 }: {
-  tag: MarkdownFileObject,
-  posts: MarkdownFileObject[]
+  tag: ObjectWithCategory,
 }) {
   return (
-    <>
-      <MetaHead title={`${tag.title}${blog.seo.sep}${blog.tags.name}`} />
-      <h1>{tag.title}</h1>
-      <ul>
-        {posts.map(post => (
-          <li key={post.slug}>
-            <Link href={`/${post.category}/${post.slug}`}>{post.title}</Link>
-          </li>
+    <PageLayout title={`${tag.title}`} metaTitle={`${tag.title}${blog.seo.sep}${blog.tags.name}`}>
+      <section>
+        {tag.posts.map(post => (
+          <FeedItem
+            key={post.slug}
+            title={`${post.title}`}
+            link={`/${post.category.slug}/${post.slug}`}
+          />
         ))}
-      </ul>
-    </>
+      </section>
+    </PageLayout>
   )
 }
 
@@ -46,18 +43,17 @@ export const getStaticPaths: GetStaticPaths = () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const params = context.params
+  const tagSlug = params?.tag?.toString()
 
   let tag: MarkdownFileObject
-  const posts: MarkdownFileObject[] = []
 
-  if (params?.tag) {
-    tag = getTagBySlug(params.tag.toString())
-    posts.push(...getPostsByTag(params.tag.toString()))
+  if (tagSlug) {
+    tag = getTagBySlug(tagSlug, [], true)
   } else {
     tag = {}
   }
 
   return {
-    props: { tag, posts },
+    props: { tag },
   }
 }

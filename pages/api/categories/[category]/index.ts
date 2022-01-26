@@ -7,8 +7,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(405).end()
   }
 
-  const slug = req.query.category.toString()
-  const queryFields = req.query.fields.toString()
+  const slug = req.query?.category?.toString()
+  const queryFields = req.query?.fields?.toString()
 
   const fields: string[] = []
 
@@ -16,6 +16,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     fields.push(...queryFields.split(','))
   }
 
-  const content = getCategoryBySlug(slug, fields)
+  const content = getCategoryBySlug(slug, fields, true)
   res.status(200).json(content)
 }

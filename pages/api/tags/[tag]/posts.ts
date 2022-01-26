@@ -3,12 +3,11 @@ import { postsDirectory, getPostBySlug } from '../../posts'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-export function getPostsByTag(tag: string, fields: string[] | undefined = undefined) {
+export function getPostsByTag(tag: string, fields: string[] | undefined = undefined, nested = false) {
   const slugs = fs.readdirSync(postsDirectory)
 
   const content = slugs
-    .map((slug) => getPostBySlug(slug, fields))
-  // sort content by date in descending order
+    .map((slug) => getPostBySlug(slug, fields, true))
     .sort((a, b) => {
       if (a.publish_date && b.publish_date) {
         return a.publish_date > b.publish_date ? -1 : 1
@@ -17,9 +16,8 @@ export function getPostsByTag(tag: string, fields: string[] | undefined = undefi
       return 0
     })
 
-
   content.forEach((post, i) => {
-    if (!post.tags.includes(tag)) {
+    if (post.tags?.includes(tag)) {
       content.splice(i, 1)
     }
   })
@@ -32,8 +30,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(405).end()
   }
 
-  const slug = req.query.tag.toString()
-  const queryFields = req.query.fields.toString()
+  const slug = req.query?.tag?.toString()
+  const queryFields = req.query?.fields?.toString()
 
   const fields: string[] = []
 

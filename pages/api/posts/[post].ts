@@ -7,8 +7,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(405).end()
   }
 
-  const slug = req.query.post.toString()
-  const queryFields = req.query.fields.toString()
+  const slug = req.query?.post?.toString()
+  const queryFields = req.query?.fields?.toString()
 
   const fields: string[] = []
 

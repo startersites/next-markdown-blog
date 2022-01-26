@@ -8,11 +8,9 @@ export default function Header() {
 
   return (
     <header role="banner" className="flex flex-col font-sans items-center justify-between md:flex-row">
-      <HomeLinkWrapper home={home} wrapper={children => <h1 className="text-base">{children}</h1>}>
-        <Link href="/">
-          <a className="font-bold">{blog.name}</a>
-        </Link>
-      </HomeLinkWrapper>
+      <Link href="/">
+        <a className="font-bold">{blog.name}</a>
+      </Link>
       <nav role="navigation" aria-label="main navigation" className="mt-4 md:ml-4 md:mt-0">
         <ul className="flex items-center">
           <NavLink href="/categories" title={blog.categories.name} />

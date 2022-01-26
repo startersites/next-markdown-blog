@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import { getAuthors } from 'pages/api/authors'
-import MetaHead from 'components/MetaHead'
+import PageLayout from 'components/PageLayout'
+import FeedItem from 'components/FeedItem'
 
 import { GetStaticProps } from 'next'
 
@@ -9,20 +9,20 @@ const blog = require('nmbs.config.json')
 export default function Authors({
   authors
 }: {
-  authors: MarkdownFileObject[]
+  authors: MarkdownFileBase[]
 }) {
   return (
-    <>
-      <MetaHead title={`${blog.authors.name}`} />
-      <h1>{blog.authors.name}</h1>
-      <ul>
+    <PageLayout title={`${blog.authors.name}`}>
+      <section>
         {authors.map(author => (
-          <li key={author.slug}>
-            <Link href={`/authors/${author.slug}`}>{author.title}</Link>
-          </li>
+          <FeedItem
+            key={author.slug}
+            title={`${author.title}`}
+            link={`/authors/${author.slug}`}
+          />
         ))}
-      </ul>
-    </>
+      </section>
+    </PageLayout>
   )
 }
 

@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import { getTags } from 'pages/api/tags'
-import MetaHead from 'components/MetaHead'
+import PageLayout from 'components/PageLayout'
+import FeedItem from 'components/FeedItem'
 
 import { GetStaticProps } from 'next'
 
@@ -9,20 +9,20 @@ const blog = require('nmbs.config.json')
 export default function Tags({
   tags,
 }: {
-  tags: MarkdownFileObject[]
+  tags: MarkdownFileBase[]
 }) {
   return (
-    <>
-      <MetaHead title={`${blog.tags.name}`} />
-      <h1>{blog.tags.name}</h1>
-      <ul>
+    <PageLayout title={blog.tags.name}>
+      <section>
         {tags.map(tag => (
-          <li key={tag.slug}>
-            <Link href={`/tags/${tag.slug}`}>{tag.title}</Link>
-          </li>
+          <FeedItem
+            key={tag.slug}
+            title={`${tag.title}`}
+            link={`/tags/${tag.slug}`}
+          />
         ))}
-      </ul>
-    </>
+      </section>
+    </PageLayout>
   )
 }
 

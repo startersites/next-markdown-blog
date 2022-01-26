@@ -1,7 +1,6 @@
-import Link from 'next/link'
-import { getPostsByAuthor } from 'pages/api/authors/[author]/posts'
 import { getAuthors, getAuthorBySlug } from 'pages/api/authors'
-import MetaHead from 'components/MetaHead'
+import PageLayout from 'components/PageLayout'
+import FeedItem from 'components/FeedItem'
 
 import { GetStaticProps, GetStaticPaths } from 'next'
 
@@ -9,23 +8,21 @@ const blog = require('nmbs.config.json')
 
 export default function Author({
   author,
-  posts,
 }: {
-  author: MarkdownFileObject,
-  posts: MarkdownFileObject[],
+  author: ObjectWithCategory,
 }) {
   return (
-    <>
-      <MetaHead title={`${author.title}${blog.seo.sep}${blog.authors.name}`} />
-      <h1>{author.title}</h1>
-      <ul>
-        {posts.map(post => (
-          <li key={post.slug}>
-            <Link href={`/${post.category}/${post.slug}`}>{post.title}</Link>
-          </li>
+    <PageLayout title={`${author.title}`} metaTitle={`${author.title}${blog.seo.sep}${blog.authors.name}`}>
+      <section>
+        {author.posts.map(post => (
+          <FeedItem
+            key={post.slug}
+            title={`${post.title}`}
+            link={`/${post.category.slug}/${post.slug}`}
+          />
         ))}
-      </ul>
-    </>
+      </section>
+    </PageLayout>
   )
 }
 
@@ -46,18 +43,17 @@ export const getStaticPaths: GetStaticPaths = () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const params = context.params
+  const authorSlug = params?.author?.toString()
 
   let author: MarkdownFileObject
-  const posts: MarkdownFileObject[] = []
 
-  if (params?.author) {
-    author = getAuthorBySlug(params.author.toString())
-    posts.push(...getPostsByAuthor(params.author.toString()))
+  if (authorSlug) {
+    author = getAuthorBySlug(authorSlug, [], true)
   } else {
     author = {}
   }
 
   return {
-    props: { author, posts },
+    props: { author },
   }
 }

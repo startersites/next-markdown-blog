@@ -1,7 +1,6 @@
-import Link from 'next/link'
-import { getPostsByCategory } from 'pages/api/categories/[category]/posts'
 import { getCategories, getCategoryBySlug } from 'pages/api/categories'
-import MetaHead from 'components/MetaHead'
+import PageLayout from 'components/PageLayout'
+import FeedItem from 'components/FeedItem'
 
 import { GetStaticProps, GetStaticPaths } from 'next'
 
@@ -9,25 +8,21 @@ const blog = require('nmbs.config.json')
 
 export default function Category({
   category,
-  posts,
 }: {
-  category: RequiredMarkdownObject
-  posts: RequiredMarkdownObject[]
+  category: ObjectWithPosts
 }) {
   return (
-    <>
-      <MetaHead
-        title={`${category.title}${blog.seo.sep}${blog.categories.name}`}
-      />
-      <h1>{category.title}</h1>
-      <ul>
-        {posts.map(post => (
-          <li key={post.slug}>
-            <Link href={`/${category.slug}/${post.slug}`}>{post.title}</Link>
-          </li>
+    <PageLayout title={`${category.title}`} metaTitle={`${category.title}${blog.seo.sep}${blog.categories.name}`}>
+      <section>
+        {category?.posts.map(post => (
+          <FeedItem
+            key={post.slug}
+            title={`${post.title}`}
+            link={`/${category.slug}/${post.slug}`}
+          />
         ))}
-      </ul>
-    </>
+      </section>
+    </PageLayout>
   )
 }
 
@@ -48,18 +43,17 @@ export const getStaticPaths: GetStaticPaths = () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const params = context.params
+  const categorySlug = params?.category?.toString()
 
   let category: MarkdownFileObject
-  const posts: MarkdownFileObject[] = []
 
-  if (params?.category) {
-    category = getCategoryBySlug(params.category.toString())
-    posts.push(...getPostsByCategory(params.category.toString()))
+  if (categorySlug) {
+    category = getCategoryBySlug(categorySlug, [], true)
   } else {
     category = {}
   }
 
   return {
-    props: { category, posts },
+    props: { category },
   }
 }

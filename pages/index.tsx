@@ -1,26 +1,28 @@
-import Link from 'next/link'
 import { getPosts } from 'pages/api/posts'
-import MetaHead from 'components/MetaHead'
-import { GetStaticProps } from 'next'
+import PageLayout from 'components/PageLayout'
+import FeedItem from 'components/FeedItem'
+
+import type { GetStaticProps } from 'next'
+
 const blog = require('nmbs.config.json')
 
 export default function Home({
   posts,
 }: {
-  posts: MarkdownFileObject[]
+  posts: NestedPostObject[]
 }) {
   return (
-    <>
-      <MetaHead />
-      <h2>{blog.posts.name}</h2>
-      <ul>
+    <PageLayout title={blog.posts.name}>
+      <section>
         {posts.map(post => (
-          <li key={post.slug}>
-            <Link href={`/${post.category}/${post.slug}`}>{post.title}</Link>
-          </li>
+          <FeedItem
+            key={post.slug}
+            title={`${post.title}`}
+            link={`/${post.category.slug}/${post.slug}`}
+          />
         ))}
-      </ul>
-    </>
+      </section>
+    </PageLayout>
   )
 }
 
