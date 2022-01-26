@@ -30,7 +30,7 @@ export function getTagBySlug(slug: string, fields: string[] | undefined = undefi
   const fileContents = fs.readFileSync(fullPath, 'utf8')
   const { data } = matter(fileContents)
 
-  const posts = nested && (!fields || fields.length === 0 || fields.includes('posts')) ? getPostsByTag(realSlug, ['title', 'category', 'excerpt']) : undefined
+  const posts = nested && (!fields || fields.length === 0 || fields.includes('posts')) ? getPostsByTag(realSlug, ['title', 'category', 'excerpt', 'thumbnail']) : undefined
 
   const theData: { [x: string]: any } = {
     ...data,

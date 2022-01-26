@@ -48,6 +48,8 @@ export default function Search({
             title={`${search.title}`}
             link={`/${search.type === 'category' ? search.slug : search.type === 'post' ? `${search.category.slug}/${search.slug}` :`${search.type}s/${search.slug}`}`}
             excerpt={search.excerpt}
+            image={search.thumbnail}
+            type={search.type}
           />
         ))}
       </section>

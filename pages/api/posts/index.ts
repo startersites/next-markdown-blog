@@ -21,7 +21,7 @@ export function getPostBySlug(slug: string, fields: string[] | undefined = undef
 
   const category = nested && data?.category && (!fields || fields.length === 0 || fields.includes('category')) ? getCategoryBySlug(data.category, ['title']) : data.category
 
-  const author = nested && data?.author && (!fields || fields.length === 0 || fields.includes('author')) ? getAuthorBySlug(data.author, ['title']) : data.author
+  const author = nested && data?.author && (!fields || fields.length === 0 || fields.includes('author')) ? getAuthorBySlug(data.author, ['title', 'twitter', 'short_bio', 'image', 'content']) : data.author
 
   const tags: MarkdownFileObject[] = []
 
