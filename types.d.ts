@@ -43,6 +43,10 @@ interface ObjectWithCategory extends MarkdownFileBase {
   posts: NestedPostObject[]
 }
 
+interface AuthorObjectWithCategory extends AuthorObjectBase{
+  posts: NestedPostObject[]
+}
+
 interface SearchResult extends NestedPostObject {
   type: 'author' | 'category' | 'post' | 'tag'
 }
