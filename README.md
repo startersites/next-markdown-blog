@@ -5,6 +5,7 @@ A lightly opinionated, full-featured Next.js blog managed through Git Workflows 
 ## Features
 
 - Posts, Categories, Tags, and Authors
+- Search
 - Full API
 - Content management UI with workflows
 - No database, hosted in git repo
