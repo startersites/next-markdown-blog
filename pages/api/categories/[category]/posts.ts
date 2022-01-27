@@ -6,20 +6,23 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 export function getPostsByCategory(category: string, fields: string[] | undefined = undefined) {
   const slugs = fs.readdirSync(postsDirectory)
 
+  const updatedFields = fields && fields.length > 0 ? [...fields, 'category'] : []
+
   const content = slugs
-    .map((slug) => getPostBySlug(slug, fields))
+    .map((slug) => getPostBySlug(slug, updatedFields))
     .sort((a, b) => (
       a.publish_date > b.publish_date ? -1 : 1
     ))
 
+  for (var i = content.length - 1; i >= 0; i--) {
+    const post = content[i]
 
-  content.forEach((post, i) => {
-    if (post.category !== category) {
+    if (post.category !== category && post.category.slug !== category) {
       content.splice(i, 1)
     } else {
       delete post.category
     }
-  })
+  }
 
   return content
 }

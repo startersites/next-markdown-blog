@@ -6,8 +6,10 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 export function getPostsByTag(tag: string, fields: string[] | undefined = undefined, nested = false) {
   const slugs = fs.readdirSync(postsDirectory)
 
+  const updatedFields = fields && fields.length > 0 ? [...fields, 'tags'] : []
+
   const content = slugs
-    .map((slug) => getPostBySlug(slug, fields, true))
+    .map((slug) => getPostBySlug(slug, updatedFields, true))
     .sort((a, b) => {
       if (a.publish_date && b.publish_date) {
         return a.publish_date > b.publish_date ? -1 : 1
@@ -16,11 +18,36 @@ export function getPostsByTag(tag: string, fields: string[] | undefined = undefi
       return 0
     })
 
-  content.forEach((post, i) => {
-    if (post.tags?.includes(tag)) {
-      content.splice(i, 1)
+  for (var i = content.length - 1; i >= 0; i--) {
+    const post = content[i]
+
+    if (!post.tags) continue
+
+    if (typeof post.tags[0] === 'string') {
+      if (!post.tags.includes(tag)) {
+        content.splice(i, 1)
+      } else {
+        // delete post.tags
+      }
+    } else {
+      let hasTag = false
+
+      for (let i = 0; i < post.tags.length; i++) {
+        const element = post.tags[i];
+
+        if (element.slug === tag) {
+          hasTag = true
+          break
+        }
+      }
+
+      if (!hasTag) {
+        content.splice(i, 1)
+      } else {
+        // delete post.tags
+      }
     }
-  })
+  }
 
   return content
 }

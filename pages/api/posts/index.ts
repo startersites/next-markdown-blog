@@ -25,10 +25,10 @@ export function getPostBySlug(slug: string, fields: string[] | undefined = undef
 
   const tags: MarkdownFileObject[] = []
 
-  if (nested && data?.tags && data.tags.length > 0) {
-    data?.tags?.forEach((tag: string) => tags.push(getTagBySlug(tag, ['title'])))
-  } else {
-    tags.push(...data?.tags)
+  if (nested && data.tags && data.tags.length > 0) {
+    data.tags.forEach((tag: string) => tags.push(getTagBySlug(tag, ['title'])))
+  } else if (data?.tags) {
+    tags.push(...data.tags)
   }
 
   const theData: { [x: string]: any } = {

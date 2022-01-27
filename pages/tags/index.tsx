@@ -9,12 +9,12 @@ const blog = require('nmbs.config.json')
 export default function Tags({
   tags,
 }: {
-  tags: MarkdownFileBase[]
+  tags: ObjectWithPosts[]
 }) {
   return (
     <PageLayout title={blog.tags.name}>
       <section className="feed-wrapper">
-        {tags.map(tag => (
+        {tags.map(tag => tag?.posts?.length > 0 && (
           <FeedItem
             key={tag.slug}
             title={`${tag.title}`}

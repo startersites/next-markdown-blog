@@ -9,12 +9,13 @@ const blog = require('nmbs.config.json')
 export default function Categories({
   categories,
 }: {
-  categories: MarkdownFileBase[]
+  categories: ObjectWithPosts[]
 }) {
+  console.log(categories)
   return (
     <PageLayout title={blog.categories.name}>
       <section className="feed-wrapper">
-        {categories.map(category => (
+        {categories.map(category => category?.posts?.length > 0 && (
           <FeedItem
             key={category.slug}
             title={`${category.title}`}
