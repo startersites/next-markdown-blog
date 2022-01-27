@@ -14,13 +14,17 @@ export function getPostsByAuthor(author: string, fields: string[] | undefined = 
       a.publish_date > b.publish_date ? -1 : 1
     ))
 
-  content.forEach((post, i) => {
+  for (var i = content.length - 1; i >= 0; i--) {
+    const post = content[i]
+
     if (post.author !== author && post.author.slug !== author) {
       content.splice(i, 1)
     } else {
       delete post.author
     }
-  })
+  }
+
+  console.log(author, content)
 
   return content
 }
