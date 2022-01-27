@@ -9,12 +9,12 @@ const blog = require('nmbs.config.json')
 export default function Authors({
   authors
 }: {
-  authors: MarkdownFileBase[]
+  authors: ObjectWithPosts[]  
 }) {
   return (
     <PageLayout title={`${blog.authors.name}`}>
       <section className="feed-wrapper">
-        {authors.map(author => (
+        {authors.map(author => author?.posts?.length > 0 && (
           <FeedItem
             key={author.slug}
             title={`${author.title}`}
