@@ -24,8 +24,6 @@ export function getPostsByAuthor(author: string, fields: string[] | undefined = 
     }
   }
 
-  console.log(author, content)
-
   return content
 }
 

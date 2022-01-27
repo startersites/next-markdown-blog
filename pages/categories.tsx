@@ -11,7 +11,6 @@ export default function Categories({
 }: {
   categories: ObjectWithPosts[]
 }) {
-  console.log(categories)
   return (
     <PageLayout title={blog.categories.name}>
       <section className="feed-wrapper">
