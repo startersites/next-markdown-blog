@@ -1,15 +1,20 @@
+import matter from 'gray-matter'
+import type { NextApiRequest, NextApiResponse } from 'next'
+
 import fs from 'fs'
 import { join } from 'path'
-import matter from 'gray-matter'
-import { getPostsByAuthor } from './[author]/posts'
 
-import type { NextApiRequest, NextApiResponse } from 'next'
+import { getPostsByAuthor } from './[author]/posts'
 
 const md = require('markdown-it')()
 
 const authorsDirectory = join(process.cwd(), '_content/authors')
 
-export function getAuthorBySlug(slug: string, fields: string[] | undefined = undefined, nested = false) {
+export function getAuthorBySlug(
+  slug: string,
+  fields: string[] | undefined = undefined,
+  nested = false
+) {
   const realSlug = slug.replace(/\.md$/, '')
 
   const fullPath = join(authorsDirectory, `${realSlug}.md`)
@@ -17,7 +22,14 @@ export function getAuthorBySlug(slug: string, fields: string[] | undefined = und
   const fileContents = fs.readFileSync(fullPath, 'utf8')
   const { data, content } = matter(fileContents)
 
-  const posts = nested && (!fields || fields.length === 0 || fields.includes('posts')) ? getPostsByAuthor(realSlug, ['title', 'category', 'excerpt', 'thumbnail'], true) : undefined
+  const posts =
+    nested && (!fields || fields.length === 0 || fields.includes('posts'))
+      ? getPostsByAuthor(
+          realSlug,
+          ['title', 'category', 'excerpt', 'thumbnail'],
+          true
+        )
+      : undefined
 
   const theData: { [x: string]: any } = {
     ...data,
@@ -27,9 +39,9 @@ export function getAuthorBySlug(slug: string, fields: string[] | undefined = und
   }
 
   if (fields !== undefined && fields.length) {
-    const filteredData: { [x: string]: any } = {slug: realSlug}
+    const filteredData: { [x: string]: any } = { slug: realSlug }
 
-    fields.forEach(field => {
+    fields.forEach((field) => {
       if (field !== slug && theData[field]) {
         filteredData[field] = theData[field]
       }
@@ -61,7 +73,10 @@ export function getAuthors(fields: string[] | undefined = undefined) {
   return content
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== 'GET') {
     res.status(405).end()
   }

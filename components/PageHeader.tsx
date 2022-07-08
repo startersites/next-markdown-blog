@@ -5,10 +5,7 @@ interface PageHeaderProps {
   metaTitle?: string
 }
 
-export default function PageHeader({
-  title,
-  metaTitle,
-}: PageHeaderProps) {
+export default function PageHeader({ title, metaTitle }: PageHeaderProps) {
   return (
     <header className="mb-8">
       <MetaHead title={metaTitle || title} />

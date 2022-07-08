@@ -1,17 +1,22 @@
+import matter from 'gray-matter'
+import type { NextApiRequest, NextApiResponse } from 'next'
+
 import fs from 'fs'
 import { join } from 'path'
-import matter from 'gray-matter'
+
+import { getAuthorBySlug } from '../authors'
 import { getCategoryBySlug } from '../categories'
 import { getTagBySlug } from '../tags'
-import { getAuthorBySlug } from '../authors'
-
-import type { NextApiRequest, NextApiResponse } from 'next'
 
 const md = require('markdown-it')()
 
 export const postsDirectory = join(process.cwd(), '_content/posts')
 
-export function getPostBySlug(slug: string, fields: string[] | undefined = undefined, nested = false) {
+export function getPostBySlug(
+  slug: string,
+  fields: string[] | undefined = undefined,
+  nested = false
+) {
   const realSlug = slug.replace(/\.md$/, '')
 
   const fullPath = join(postsDirectory, `${realSlug}.md`)
@@ -19,9 +24,25 @@ export function getPostBySlug(slug: string, fields: string[] | undefined = undef
   const fileContents = fs.readFileSync(fullPath, 'utf8')
   const { data, content } = matter(fileContents)
 
-  const category = nested && data?.category && (!fields || fields.length === 0 || fields.includes('category')) ? getCategoryBySlug(data.category, ['title']) : data.category
+  const category =
+    nested &&
+    data?.category &&
+    (!fields || fields.length === 0 || fields.includes('category'))
+      ? getCategoryBySlug(data.category, ['title'])
+      : data.category
 
-  const author = nested && data?.author && (!fields || fields.length === 0 || fields.includes('author')) ? getAuthorBySlug(data.author, ['title', 'twitter', 'short_bio', 'image', 'content']) : data.author
+  const author =
+    nested &&
+    data?.author &&
+    (!fields || fields.length === 0 || fields.includes('author'))
+      ? getAuthorBySlug(data.author, [
+          'title',
+          'twitter',
+          'short_bio',
+          'image',
+          'content',
+        ])
+      : data.author
 
   const tags: MarkdownFileObject[] = []
 
@@ -43,7 +64,7 @@ export function getPostBySlug(slug: string, fields: string[] | undefined = undef
   if (fields !== undefined && fields.length) {
     const filteredData: { [x: string]: any } = { slug: realSlug }
 
-    fields.forEach(field => {
+    fields.forEach((field) => {
       if (field !== slug && theData[field]) {
         filteredData[field] = theData[field]
       }
@@ -64,14 +85,15 @@ export function getPosts(fields: string[] | undefined = undefined) {
 
   const content = slugs
     .map((slug) => getPostBySlug(slug, fields, true))
-    .sort((a, b) => (
-      a.published_at > b.published_at ? -1 : 1
-    ))
+    .sort((a, b) => (a.published_at > b.published_at ? -1 : 1))
 
   return content
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== 'GET') {
     res.status(405).end()
   }

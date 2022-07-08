@@ -1,20 +1,19 @@
-import { getTags, getTagBySlug } from 'pages/api/tags'
-import PageLayout from 'components/PageLayout'
-import FeedItem from 'components/FeedItem'
-
 import { GetStaticProps, GetStaticPaths } from 'next'
+
+import FeedItem from 'components/FeedItem'
+import PageLayout from 'components/PageLayout'
+import { getTags, getTagBySlug } from 'pages/api/tags'
 
 const blog = require('site.config.json')
 
-export default function Tag({
-  tag,
-}: {
-  tag: ObjectWithCategory,
-}) {
+export default function Tag({ tag }: { tag: ObjectWithCategory }) {
   return (
-    <PageLayout title={`${blog.tags.name_singular}: ${tag.title}`} metaTitle={`${tag.title}${blog.seo.sep}${blog.tags.name}`}>
+    <PageLayout
+      title={`${blog.tags.name_singular}: ${tag.title}`}
+      metaTitle={`${tag.title}${blog.seo.sep}${blog.tags.name}`}
+    >
       <section className="feed-wrapper">
-        {tag.posts.map(post => (
+        {tag.posts.map((post) => (
           <FeedItem
             key={post.slug}
             title={`${post.title}`}

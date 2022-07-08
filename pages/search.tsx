@@ -1,15 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
-import { getSearch } from 'pages/api/search'
-import PageLayout from 'components/PageLayout'
-import FeedItem from 'components/FeedItem'
-
 import type { GetStaticProps } from 'next'
+import { useEffect, useRef, useState } from 'react'
 
-export default function Search({
-  search,
-}: {
-  search: SearchResult[]
-}) {
+import FeedItem from 'components/FeedItem'
+import PageLayout from 'components/PageLayout'
+import { getSearch } from 'pages/api/search'
+
+export default function Search({ search }: { search: SearchResult[] }) {
   const [searchValue, setSearchValue] = useState('')
   const [searchItems, setSearchItems] = useState(search)
 
@@ -23,8 +19,10 @@ export default function Search({
     const value = searchValue.toLocaleLowerCase()
 
     const filteredItems = search.filter((item) => {
-      if (item.title && item.title.toLocaleLowerCase().includes(value)) return true
-      if (item.excerpt && item.excerpt.toLocaleLowerCase().includes(value)) return true
+      if (item.title && item.title.toLocaleLowerCase().includes(value))
+        return true
+      if (item.excerpt && item.excerpt.toLocaleLowerCase().includes(value))
+        return true
     })
 
     setSearchItems(filteredItems)
@@ -46,7 +44,13 @@ export default function Search({
           <FeedItem
             key={i}
             title={`${search.title}`}
-            link={`/${search.type === 'category' ? search.slug : search.type === 'post' ? `${search.category.slug}/${search.slug}` :`${search.type}s/${search.slug}`}`}
+            link={`/${
+              search.type === 'category'
+                ? search.slug
+                : search.type === 'post'
+                ? `${search.category.slug}/${search.slug}`
+                : `${search.type}s/${search.slug}`
+            }`}
             excerpt={search.excerpt}
             image={search.thumbnail}
             type={search.type}

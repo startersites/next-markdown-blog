@@ -1,30 +1,43 @@
-import { getAuthors, getAuthorBySlug } from 'pages/api/authors'
-import PageLayout from 'components/PageLayout'
-import FeedItem from 'components/FeedItem'
-
 import { GetStaticProps, GetStaticPaths } from 'next'
+import Image from 'next/image'
+
+import FeedItem from 'components/FeedItem'
+import PageLayout from 'components/PageLayout'
+import { getAuthors, getAuthorBySlug } from 'pages/api/authors'
 
 const blog = require('site.config.json')
 
 export default function Author({
   author,
 }: {
-  author: AuthorObjectWithCategory,
+  author: AuthorObjectWithCategory
 }) {
   return (
-    <PageLayout title={`${blog.authors.name_singular}: ${author.title}`} metaTitle={`${author.title}${blog.seo.sep}${blog.authors.name}`}>
+    <PageLayout
+      title={`${blog.authors.name_singular}: ${author.title}`}
+      metaTitle={`${author.title}${blog.seo.sep}${blog.authors.name}`}
+    >
       <div className="md:flex">
         {author.image && (
-          <img src={author.image} alt={author.title} className="object-fit rounded-full w-32 h-32 mb-8 md:mb-0 md:mr-8" />
+          <Image
+            src={author.image}
+            alt={author.title}
+            className="object-fit rounded-full w-32 h-32 mb-8 md:mb-0 md:mr-8"
+          />
         )}
 
-        <div id="post-content" dangerouslySetInnerHTML={{__html: author.content}} />
+        <div
+          id="post-content"
+          dangerouslySetInnerHTML={{ __html: author.content }}
+        />
       </div>
 
       <section className="mt-12 pt-12 border-t border-gray-300">
-        <h2 className="mb-8 h3">{blog.posts.name} by {author.title}</h2>
+        <h2 className="mb-8 h3">
+          {blog.posts.name} by {author.title}
+        </h2>
         <div className="feed-wrapper">
-          {author.posts.map(post => (
+          {author.posts.map((post) => (
             <FeedItem
               key={post.slug}
               title={`${post.title}`}

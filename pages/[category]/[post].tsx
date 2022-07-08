@@ -1,22 +1,32 @@
+import { GetStaticProps, GetStaticPaths } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
-import { getPosts, getPostBySlug } from 'pages/api/posts'
-import { getPostsByCategory } from 'pages/api/categories/[category]/posts'
+
 import MetaHead from 'components/MetaHead'
+import { getPostsByCategory } from 'pages/api/categories/[category]/posts'
+import { getPosts, getPostBySlug } from 'pages/api/posts'
 
 const blog = require('site.config.json')
-
-import { GetStaticProps, GetStaticPaths } from 'next'
 
 export default function Post({
   post,
   categoryPosts,
 }: {
-  post: NestedPostObject,
+  post: NestedPostObject
   categoryPosts: NestedPostObject[]
 }) {
-  const { title, slug, published_at, thumbnail, excerpt, author, category, tags } = post
+  const {
+    title,
+    slug,
+    published_at,
+    thumbnail,
+    excerpt,
+    author,
+    category,
+    tags,
+  } = post
 
-  const relatedPosts = categoryPosts.filter(post => post.slug !== slug)
+  const relatedPosts = categoryPosts.filter((post) => post.slug !== slug)
 
   return (
     <article>
@@ -30,12 +40,20 @@ export default function Post({
         />
         <h1>{title}</h1>
         {published_at && (
-          <time className="text-sm block mt-2" dateTime={published_at} title={published_at}>
+          <time
+            className="text-sm block mt-2"
+            dateTime={published_at}
+            title={published_at}
+          >
             {published_at}
           </time>
         )}
         {thumbnail && (
-          <img src={thumbnail} alt={title} className="aspect-video object-cover mt-8" />
+          <Image
+            src={thumbnail}
+            alt={title}
+            className="aspect-video object-cover mt-8"
+          />
         )}
         <div className="text-base flex items-center justify-between mt-2">
           {author && (
@@ -53,16 +71,23 @@ export default function Post({
         </div>
       </header>
 
-      {post.content && (<div id="post-content" dangerouslySetInnerHTML={{ __html: post.content }} />)}
+      {post.content && (
+        <div
+          id="post-content"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
+      )}
 
       <footer className="mt-6">
-        {tags && tags.length > 0 &&(
+        {tags && tags.length > 0 && (
           <p>
             <span>
               {tags.length > 1 ? blog.tags.name : blog.tags.name_singular}:{' '}
             </span>
-            {tags.map(tag => (
-              <Link href={`/tags/${tag.slug}`} key={tag.slug}>{tag.title}</Link>
+            {tags.map((tag) => (
+              <Link href={`/tags/${tag.slug}`} key={tag.slug}>
+                {tag.title}
+              </Link>
             ))}
           </p>
         )}
@@ -71,14 +96,21 @@ export default function Post({
           <div className="md:flex">
             <Link href={`/authors/${author.slug}`}>
               <a className="inline-block mb-4 md:mb-0 md:mr-4">
-                <img src={author.image} alt={author.title} className="aspect-square rounded-full object-cover w-32" />
+                <Image
+                  src={author.image}
+                  alt={author.title}
+                  className="aspect-square rounded-full object-cover w-32"
+                />
               </a>
             </Link>
             <div>
               <h3 className="h5">
                 <Link href={`/authors/${author.slug}`}>{author.title}</Link>
               </h3>
-              <div dangerouslySetInnerHTML={{__html: author.short_bio}} className="mt-4" />
+              <div
+                dangerouslySetInnerHTML={{ __html: author.short_bio }}
+                className="mt-4"
+              />
             </div>
           </div>
         </section>
@@ -89,12 +121,12 @@ export default function Post({
           <h2 className="h4 mb-4">Related Posts</h2>
 
           <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {relatedPosts.slice(0,2).map(post => (
-              <article>
+            {relatedPosts.slice(0, 2).map((post) => (
+              <article key={post.slug}>
                 <header>
                   <Link href={`/${category.slug}/${post.slug}`}>
                     <a>
-                      <img src={post.thumbnail} alt={post.title} />
+                      <Image src={post.thumbnail} alt={post.title} />
                       <h3 className="h5 mt-2">{post.title}</h3>
                     </a>
                   </Link>
@@ -140,7 +172,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
 
   if (post?.category?.slug) {
-    categoryPosts.push(...getPostsByCategory(post.category.slug, [] ))
+    categoryPosts.push(...getPostsByCategory(post.category.slug, []))
   }
 
   return {

@@ -1,16 +1,12 @@
-import { getPosts } from 'pages/api/posts'
-import PageLayout from 'components/PageLayout'
-import FeedItem from 'components/FeedItem'
-
 import type { GetStaticProps } from 'next'
+
+import FeedItem from 'components/FeedItem'
+import PageLayout from 'components/PageLayout'
+import { getPosts } from 'pages/api/posts'
 
 const blog = require('site.config.json')
 
-export default function Home({
-  posts,
-}: {
-  posts: NestedPostObject[]
-}) {
+export default function Home({ posts }: { posts: NestedPostObject[] }) {
   return (
     <PageLayout title={blog.posts.name}>
       <section className="feed-wrapper">

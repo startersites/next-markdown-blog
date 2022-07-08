@@ -22,7 +22,13 @@ export default function FeedItem({
       {image && (
         <Link href={link}>
           <a>
-            <img src={image} alt={title} className={`${!feature ? 'mb-4 md:mb-0 md:max-w-xs md:mr-6' : 'mb-4'} aspect-video object-cover`} />
+            <img
+              src={image}
+              alt={title}
+              className={`${
+                !feature ? 'mb-4 md:mb-0 md:max-w-xs md:mr-6' : 'mb-4'
+              } aspect-video object-cover`}
+            />
           </a>
         </Link>
       )}
@@ -30,14 +36,10 @@ export default function FeedItem({
         <header>
           <p className="text-xs uppercase font-sans font-bold">{type}</p>
           <h2 className="text-3xl">
-            <Link href={link}>
-              {title}
-            </Link>
+            <Link href={link}>{title}</Link>
           </h2>
         </header>
-        {excerpt && (
-          <p className="mt-1">{excerpt}</p>
-        )}
+        {excerpt && <p className="mt-1">{excerpt}</p>}
       </div>
     </article>
   )

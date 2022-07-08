@@ -1,9 +1,14 @@
-import fs from 'fs'
-import { postsDirectory, getPostBySlug } from '../../posts'
-
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-export function getPostsByTag(tag: string, fields: string[] | undefined = undefined, nested = false) {
+import fs from 'fs'
+
+import { postsDirectory, getPostBySlug } from '../../posts'
+
+export function getPostsByTag(
+  tag: string,
+  fields: string[] | undefined = undefined,
+  nested = false
+) {
   const slugs = fs.readdirSync(postsDirectory)
 
   const updatedFields = fields && fields.length > 0 ? [...fields, 'tags'] : []
@@ -33,7 +38,7 @@ export function getPostsByTag(tag: string, fields: string[] | undefined = undefi
       let hasTag = false
 
       for (let i = 0; i < post.tags.length; i++) {
-        const element = post.tags[i];
+        const element = post.tags[i]
 
         if (element.slug === tag) {
           hasTag = true
@@ -52,7 +57,10 @@ export function getPostsByTag(tag: string, fields: string[] | undefined = undefi
   return content
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== 'GET') {
     res.status(405).end()
   }

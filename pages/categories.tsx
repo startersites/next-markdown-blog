@@ -1,8 +1,8 @@
-import { getCategories } from 'pages/api/categories'
-import PageLayout from 'components/PageLayout'
-import FeedItem from 'components/FeedItem'
-
 import type { GetStaticProps } from 'next'
+
+import FeedItem from 'components/FeedItem'
+import PageLayout from 'components/PageLayout'
+import { getCategories } from 'pages/api/categories'
 
 const blog = require('site.config.json')
 
@@ -14,13 +14,16 @@ export default function Categories({
   return (
     <PageLayout title={blog.categories.name}>
       <section className="feed-wrapper">
-        {categories.map(category => category?.posts?.length > 0 && (
-          <FeedItem
-            key={category.slug}
-            title={`${category.title}`}
-            link={`/${category.slug}`}
-          />
-        ))}
+        {categories.map(
+          (category) =>
+            category?.posts?.length > 0 && (
+              <FeedItem
+                key={category.slug}
+                title={`${category.title}`}
+                link={`/${category.slug}`}
+              />
+            )
+        )}
       </section>
     </PageLayout>
   )
