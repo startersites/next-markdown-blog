@@ -4,7 +4,7 @@ import FeedItem from 'components/FeedItem'
 
 import { GetStaticProps, GetStaticPaths } from 'next'
 
-const blog = require('nmbs.config.json')
+const blog = require('site.config.json')
 
 export default function Author({
   author,

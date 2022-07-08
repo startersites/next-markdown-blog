@@ -4,12 +4,12 @@ import FeedItem from 'components/FeedItem'
 
 import { GetStaticProps } from 'next'
 
-const blog = require('nmbs.config.json')
+const blog = require('site.config.json')
 
 export default function Authors({
   authors
 }: {
-  authors: ObjectWithPosts[]  
+  authors: ObjectWithPosts[]
 }) {
   return (
     <PageLayout title={`${blog.authors.name}`}>

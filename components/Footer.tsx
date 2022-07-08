@@ -1,5 +1,5 @@
 import Link from 'next/link'
-const blog = require('nmbs.config.json')
+const blog = require('site.config.json')
 
 export default function Footer() {
   return (

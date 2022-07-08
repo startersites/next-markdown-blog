@@ -3,7 +3,7 @@ import { getPosts, getPostBySlug } from 'pages/api/posts'
 import { getPostsByCategory } from 'pages/api/categories/[category]/posts'
 import MetaHead from 'components/MetaHead'
 
-const blog = require('nmbs.config.json')
+const blog = require('site.config.json')
 
 import { GetStaticProps, GetStaticPaths } from 'next'
 

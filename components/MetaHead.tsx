@@ -1,6 +1,6 @@
 import Head from "next/head"
 import { useRouter } from "next/router"
-const blog = require('nmbs.config.json')
+const blog = require('site.config.json')
 
 interface MetaHeadProps {
   title?: string

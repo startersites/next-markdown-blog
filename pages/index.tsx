@@ -4,7 +4,7 @@ import FeedItem from 'components/FeedItem'
 
 import type { GetStaticProps } from 'next'
 
-const blog = require('nmbs.config.json')
+const blog = require('site.config.json')
 
 export default function Home({
   posts,
