@@ -16,7 +16,6 @@ A lightly opinionated, full-featured Next.js blog managed through Git Workflows 
 
 - [Next.js](https://nextjs.org/) - React framework
 - [NetlifyCMS](https://www.netlifycms.org/) - Git workflow content management
-- [TailwindCSS](https://tailwindcss.com/) (optional) - Utility CSS framework
 
 ## Deploying to Netlify
 

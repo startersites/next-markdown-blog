@@ -1,40 +1,44 @@
-import { getAuthors, getAuthorBySlug } from 'pages/api/authors'
-import PageLayout from 'components/PageLayout'
-import FeedItem from 'components/FeedItem'
-
 import { GetStaticProps, GetStaticPaths } from 'next'
 
-const blog = require('nmbs.config.json')
+import FeedItem from 'components/FeedItem'
+import PageLayout from 'components/PageLayout'
+import { getAuthors, getAuthorBySlug } from 'pages/api/authors'
+import site from 'site.config'
 
 export default function Author({
   author,
 }: {
-  author: AuthorObjectWithCategory,
+  author: AuthorObjectWithCategory
 }) {
   return (
-    <PageLayout title={`${blog.authors.name_singular}: ${author.title}`} metaTitle={`${author.title}${blog.seo.sep}${blog.authors.name}`}>
-      <div className="md:flex">
-        {author.image && (
-          <img src={author.image} alt={author.title} className="object-fit rounded-full w-32 h-32 mb-8 md:mb-0 md:mr-8" />
-        )}
+    <PageLayout
+      title={`${site.authors.name_singular}: ${author.title}`}
+      metaTitle={`${author.title}${site.seo.sep}${site.authors.name}`}
+      type="author"
+    >
+      <div className="content-container">
+        {author.image && <img src={author.image} alt={author.title} />}
 
-        <div id="post-content" dangerouslySetInnerHTML={{__html: author.content}} />
+        <div
+          className="post-content"
+          dangerouslySetInnerHTML={{ __html: author.content }}
+        />
       </div>
 
-      <section className="mt-12 pt-12 border-t border-gray-300">
-        <h2 className="mb-8 h3">{blog.posts.name} by {author.title}</h2>
-        <div className="feed-wrapper">
-          {author.posts.map(post => (
-            <FeedItem
-              key={post.slug}
-              title={`${post.title}`}
-              link={`/${post.category.slug}/${post.slug}`}
-              image={post.thumbnail}
-              type={post.category.title}
-              excerpt={post.excerpt}
-            />
-          ))}
-        </div>
+      <section className="posts">
+        <h2 className="h3">
+          {site.posts.name} by {author.title}
+        </h2>
+        {author.posts.map((post) => (
+          <FeedItem
+            key={post.slug}
+            title={`${post.title}`}
+            link={`/${post.category.slug}/${post.slug}`}
+            image={post.thumbnail}
+            type={post.category.title}
+            excerpt={post.excerpt}
+          />
+        ))}
       </section>
     </PageLayout>
   )
@@ -47,7 +51,7 @@ export const getStaticPaths: GetStaticPaths = () => {
     paths: authors.map((author) => {
       return {
         params: {
-          author: author.slug,
+          author: author.slug as string,
         },
       }
     }),

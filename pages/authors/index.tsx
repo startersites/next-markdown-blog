@@ -1,26 +1,24 @@
-import { getAuthors } from 'pages/api/authors'
-import PageLayout from 'components/PageLayout'
-import FeedItem from 'components/FeedItem'
-
 import { GetStaticProps } from 'next'
 
-const blog = require('nmbs.config.json')
+import FeedItem from 'components/FeedItem'
+import PageLayout from 'components/PageLayout'
+import { getAuthors } from 'pages/api/authors'
+import site from 'site.config'
 
-export default function Authors({
-  authors
-}: {
-  authors: ObjectWithPosts[]  
-}) {
+export default function Authors({ authors }: { authors: ObjectWithPosts[] }) {
   return (
-    <PageLayout title={`${blog.authors.name}`}>
-      <section className="feed-wrapper">
-        {authors.map(author => author?.posts?.length > 0 && (
-          <FeedItem
-            key={author.slug}
-            title={`${author.title}`}
-            link={`/authors/${author.slug}`}
-          />
-        ))}
+    <PageLayout title={`${site.authors.name}`}>
+      <section>
+        {authors.map(
+          (author) =>
+            author?.posts?.length > 0 && (
+              <FeedItem
+                key={author.slug}
+                title={`${author.title}`}
+                link={`/authors/${author.slug}`}
+              />
+            )
+        )}
       </section>
     </PageLayout>
   )

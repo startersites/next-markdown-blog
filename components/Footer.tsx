@@ -1,10 +1,15 @@
 import Link from 'next/link'
-const blog = require('nmbs.config.json')
+
+import site from 'site.config'
 
 export default function Footer() {
   return (
-    <footer role="contentinfo" className="font-sans px-wrap">
-      <p className="text-xs text-center py-2">Copyright &copy; {new Date().getFullYear()} <Link href="/">{blog.legal_name || blog.name}</Link>. All rights reserved.</p>
+    <footer role="contentinfo" className="site-footer">
+      <p className="copyright">
+        Copyright &copy; {new Date().getFullYear()}{' '}
+        <Link href="/">{site.legal_name || site.name}</Link>. All rights
+        reserved.
+      </p>
     </footer>
   )
 }

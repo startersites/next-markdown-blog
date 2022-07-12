@@ -1,22 +1,14 @@
 {
   "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
+    "next/core-web-vitals",
     "plugin:prettier/recommended",
-    "prettier/react"
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": 12,
-    "sourceType": "module"
-  },
+  "parser": "@typescript-eslint/parser",
   "plugins": [
-    "prettier",
-    "import",
-    "react",
-    "react-hooks"
+    "@typescript-eslint",
+    "prettier"
   ],
   "ignorePatterns": ["node_modules"],
   "settings": {
@@ -26,68 +18,43 @@
   },
   "rules": {
     "prettier/prettier": "warn",
-    "no-console": "off",
-    "prefer-object-spread": "warn",
-    "prefer-spread": "warn",
-    "no-unused-expressions": [
-      "error",
-      { "allowShortCircuit": true, "allowTernary": true }
-    ],
-    "no-useless-escape": "off",
-    "camelcase": ["warn", { "properties": "never" }],
-    "no-new": "warn",
-    "new-cap": ["error", { "newIsCap": true, "capIsNew": false }],
-    "no-unused-vars": [
-      "error",
-      { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
-    ],
-    "react/prop-types": [
-      "warn",
-      {
-        "skipUndeclared": true,
-        "ignore": ["style", "children", "className", "theme"]
-      }
-    ],
-    "react/display-name": "off",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
     "import/order": [
-      "error",
+      1,
       {
         "newlines-between": "always",
-        "pathGroupsExcludedImportTypes": ["react"],
+        "groups": [
+          "external",
+          "builtin",
+          "internal",
+          "sibling",
+          "parent",
+          "index"
+        ],
         "pathGroups": [
           {
-            "pattern": "react",
-            "group": "builtin",
+            "pattern": "components",
+            "group": "internal"
+          },
+          {
+            "pattern": "common",
+            "group": "internal"
+          },
+          {
+            "pattern": "routes/ **",
+            "group": "internal"
+          },
+          {
+            "pattern": "assets/**",
+            "group": "internal",
             "position": "after"
-          },
-          {
-            "pattern": "components/**",
-            "group": "parent",
-            "position": "before"
-          },
-          {
-            "pattern": "pages/**",
-            "group": "parent",
-            "position": "before"
           }
         ],
+        "pathGroupsExcludedImportTypes": ["internal"],
         "alphabetize": {
           "order": "asc",
           "caseInsensitive": true
         }
       }
-    ],
-    "curly": "error",
-    "react/react-in-jsx-scope": 0,
-    "indent": [ "warn", 2 ],
-    "linebreak-style": [ "warn", "unix" ],
-    "quotes": [ "warn", "single" ],
-    "semi": [ "warn", "never" ],
-    "max-len": [ "warn", {"code": 80}],
-    "no-empty-function": "off",
-    "camelcase": "off",
-    "no-use-before-define": "off"
+    ]
   }
 }

@@ -1,20 +1,18 @@
-import { getTags, getTagBySlug } from 'pages/api/tags'
-import PageLayout from 'components/PageLayout'
-import FeedItem from 'components/FeedItem'
-
 import { GetStaticProps, GetStaticPaths } from 'next'
 
-const blog = require('nmbs.config.json')
+import FeedItem from 'components/FeedItem'
+import PageLayout from 'components/PageLayout'
+import { getTags, getTagBySlug } from 'pages/api/tags'
+import site from 'site.config'
 
-export default function Tag({
-  tag,
-}: {
-  tag: ObjectWithCategory,
-}) {
+export default function Tag({ tag }: { tag: ObjectWithCategory }) {
   return (
-    <PageLayout title={`${blog.tags.name_singular}: ${tag.title}`} metaTitle={`${tag.title}${blog.seo.sep}${blog.tags.name}`}>
-      <section className="feed-wrapper">
-        {tag.posts.map(post => (
+    <PageLayout
+      title={`${site.tags.name_singular}: ${tag.title}`}
+      metaTitle={`${tag.title}${site.seo.sep}${site.tags.name}`}
+    >
+      <section>
+        {tag.posts.map((post) => (
           <FeedItem
             key={post.slug}
             title={`${post.title}`}
@@ -36,7 +34,7 @@ export const getStaticPaths: GetStaticPaths = () => {
     paths: tags.map((tag) => {
       return {
         params: {
-          tag: tag.slug,
+          tag: tag.slug as string,
         },
       }
     }),

@@ -1,19 +1,14 @@
-import { getPosts } from 'pages/api/posts'
-import PageLayout from 'components/PageLayout'
-import FeedItem from 'components/FeedItem'
-
 import type { GetStaticProps } from 'next'
 
-const blog = require('nmbs.config.json')
+import FeedItem from 'components/FeedItem'
+import PageLayout from 'components/PageLayout'
+import { getPosts } from 'pages/api/posts'
+import site from 'site.config'
 
-export default function Home({
-  posts,
-}: {
-  posts: NestedPostObject[]
-}) {
+export default function Home({ posts }: { posts: NestedPostObject[] }) {
   return (
-    <PageLayout title={blog.posts.name}>
-      <section className="feed-wrapper">
+    <PageLayout title={site.posts.name}>
+      <section>
         {posts.map((post, i) => (
           <FeedItem
             key={post.slug}

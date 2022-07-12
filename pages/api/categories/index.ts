@@ -1,34 +1,47 @@
-import fs from 'fs'
-import { join } from 'path'
 import matter from 'gray-matter'
-import { getPostsByCategory } from './[category]/posts'
-
+import md from 'markdown-it'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-// const md = require('markdown-it')()
+import fs from 'fs'
+import { join } from 'path'
+
+import { getPostsByCategory } from './[category]/posts'
 
 const categoriesDirectory = join(process.cwd(), '_content/categories')
 
-export function getCategoryBySlug(slug: string, fields: string[] | undefined = undefined, nested = false) {
+export function getCategoryBySlug(
+  slug: string,
+  fields: string[] | undefined = undefined,
+  nested = false
+) {
   const realSlug = slug.replace(/\.md$/, '')
 
   const fullPath = join(categoriesDirectory, `${realSlug}.md`)
 
   const fileContents = fs.readFileSync(fullPath, 'utf8')
-  const { data } = matter(fileContents)
+  const { data, content } = matter(fileContents)
 
-  const posts = nested && (!fields || fields.length === 0 || fields.includes('posts')) ? getPostsByCategory(realSlug, ['title', 'category', 'excerpt', 'thumbnail']) : undefined
+  const posts =
+    nested && (!fields || fields.length === 0 || fields.includes('posts'))
+      ? getPostsByCategory(realSlug, [
+          'title',
+          'category',
+          'excerpt',
+          'thumbnail',
+        ])
+      : undefined
 
-  const theData: { [x: string]: any } = {
+  const theData: { [x: string]: unknown } = {
     ...data,
     posts,
     slug: realSlug,
+    content: md().render(content),
   }
 
   if (fields !== undefined && fields.length) {
-    const filteredData: { [x: string]: any } = { slug: realSlug }
+    const filteredData: { [x: string]: unknown } = { slug: realSlug }
 
-    fields.forEach(field => {
+    fields.forEach((field) => {
       if (field !== slug && theData[field]) {
         filteredData[field] = theData[field]
       }
@@ -50,7 +63,12 @@ export function getCategories(fields: string[] | undefined = undefined) {
   const content = slugs
     .map((slug) => getCategoryBySlug(slug, fields, true))
     .sort((a, b) => {
-      if (a.title && b.title) {
+      if (
+        a.title &&
+        b.title &&
+        typeof a.title === 'string' &&
+        typeof b.title === 'string'
+      ) {
         return a.title > b.title ? -1 : 1
       }
 
@@ -60,7 +78,10 @@ export function getCategories(fields: string[] | undefined = undefined) {
   return content
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== 'GET') {
     res.status(405).end()
   }

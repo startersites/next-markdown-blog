@@ -1,16 +1,19 @@
-import Header from './Header'
-import Footer from './Footer'
+import Head from 'next/head'
 
-export default function Layout({ children }: {children: React.ReactNode}) {
+import Footer from './Footer'
+import Header from './Header'
+
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div id="startersites-app">
+      <Head>
+        <link rel="shortcut icon" href="/favicon.png" />
+      </Head>
       <Header />
-      <main className="flex-1 px-wrap py-12 text-lg">
-        <div className="mx-auto max-w-3xl">
-          {children}
-        </div>
+      <main>
+        <div className="inner">{children}</div>
       </main>
       <Footer />
-    </>
+    </div>
   )
 }

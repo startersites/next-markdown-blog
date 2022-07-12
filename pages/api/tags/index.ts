@@ -1,15 +1,19 @@
+import matter from 'gray-matter'
+import type { NextApiRequest, NextApiResponse } from 'next'
+
 import fs from 'fs'
 import { join } from 'path'
-import matter from 'gray-matter'
-import { getPostsByTag } from './[tag]/posts'
 
-import type { NextApiRequest, NextApiResponse } from 'next'
+import { getPostsByTag } from './[tag]/posts'
 
 // const md = require('markdown-it')()
 
 export const tagsDirectory = join(process.cwd(), '_content/tags')
 
-export function getTagsBySlugs(slugs: string[], fields: string[] | undefined = undefined, nested = false) {
+export function getTagsBySlugs(
+  slugs: string[],
+  fields: string[] | undefined = undefined
+) {
   const tags: MarkdownFileObject[] = []
 
   if (slugs !== undefined && slugs.length) {
@@ -22,7 +26,11 @@ export function getTagsBySlugs(slugs: string[], fields: string[] | undefined = u
   return tags
 }
 
-export function getTagBySlug(slug: string, fields: string[] | undefined = undefined, nested = false) {
+export function getTagBySlug(
+  slug: string,
+  fields: string[] | undefined = undefined,
+  nested = false
+) {
   const realSlug = slug.replace(/\.md$/, '')
 
   const fullPath = join(tagsDirectory, `${realSlug}.md`)
@@ -30,18 +38,21 @@ export function getTagBySlug(slug: string, fields: string[] | undefined = undefi
   const fileContents = fs.readFileSync(fullPath, 'utf8')
   const { data } = matter(fileContents)
 
-  const posts = nested && (!fields || fields.length === 0 || fields.includes('posts')) ? getPostsByTag(realSlug, ['title', 'category', 'excerpt', 'thumbnail']) : undefined
+  const posts =
+    nested && (!fields || fields.length === 0 || fields.includes('posts'))
+      ? getPostsByTag(realSlug, ['title', 'category', 'excerpt', 'thumbnail'])
+      : undefined
 
-  const theData: { [x: string]: any } = {
+  const theData: { [x: string]: unknown } = {
     ...data,
     posts,
     slug: realSlug,
   }
 
   if (fields !== undefined && fields.length) {
-    const filteredData: { [x: string]: any } = { slug: realSlug }
+    const filteredData: { [x: string]: unknown } = { slug: realSlug }
 
-    fields.forEach(field => {
+    fields.forEach((field) => {
       if (field !== slug && theData[field]) {
         filteredData[field] = theData[field]
       }
@@ -63,7 +74,12 @@ export function getTags(fields: string[] | undefined = undefined) {
   const content = slugs
     .map((slug) => getTagBySlug(slug, fields, true))
     .sort((a, b) => {
-      if (a.title && b.title) {
+      if (
+        a.title &&
+        b.title &&
+        typeof a.title === 'string' &&
+        typeof b.title === 'string'
+      ) {
         return a.title > b.title ? -1 : 1
       }
 
@@ -73,7 +89,10 @@ export function getTags(fields: string[] | undefined = undefined) {
   return content
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== 'GET') {
     res.status(405).end()
   }

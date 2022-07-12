@@ -1,14 +1,17 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
+
 import { getAuthors } from './authors'
 import { getCategories } from './categories'
 import { getPosts } from './posts'
 import { getTags } from './tags'
 
-import type { NextApiRequest, NextApiResponse } from 'next'
-
 export function getSearch(fields: string[] | undefined = undefined) {
   const content: SearchResult[] = []
 
-  function processData(func: (fields: string[] | undefined) => any, type: 'author' | 'category' | 'post' | 'tag') {
+  function processData(
+    func: (fields: string[] | undefined) => { [x: string]: unknown }[],
+    type: 'author' | 'category' | 'post' | 'tag'
+  ) {
     const getData = func(['title', 'category', 'excerpt'])
 
     for (let i = 0; i < getData.length; i++) {
@@ -35,7 +38,10 @@ export function getSearch(fields: string[] | undefined = undefined) {
   return content
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== 'GET') {
     res.status(405).end()
   }

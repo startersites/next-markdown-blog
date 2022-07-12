@@ -1,9 +1,13 @@
-import fs from 'fs'
-import { postsDirectory, getPostBySlug } from '../../posts'
-
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-export function getPostsByTag(tag: string, fields: string[] | undefined = undefined, nested = false) {
+import fs from 'fs'
+
+import { postsDirectory, getPostBySlug } from '../../posts'
+
+export function getPostsByTag(
+  tag: string,
+  fields: string[] | undefined = undefined
+) {
   const slugs = fs.readdirSync(postsDirectory)
 
   const updatedFields = fields && fields.length > 0 ? [...fields, 'tags'] : []
@@ -11,20 +15,25 @@ export function getPostsByTag(tag: string, fields: string[] | undefined = undefi
   const content = slugs
     .map((slug) => getPostBySlug(slug, updatedFields, true))
     .sort((a, b) => {
-      if (a.publish_date && b.publish_date) {
+      if (
+        a.publish_date &&
+        b.publish_date &&
+        typeof a.publish_date === 'string' &&
+        typeof b.publish_date === 'string'
+      ) {
         return a.publish_date > b.publish_date ? -1 : 1
       }
 
       return 0
     })
 
-  for (var i = content.length - 1; i >= 0; i--) {
+  for (let i = content.length - 1; i >= 0; i--) {
     const post = content[i]
 
     if (!post.tags) continue
 
-    if (typeof post.tags[0] === 'string') {
-      if (!post.tags.includes(tag)) {
+    if (typeof (post.tags as string[])[0] === 'string') {
+      if (!(post.tags as string[]).includes(tag)) {
         content.splice(i, 1)
       } else {
         // delete post.tags
@@ -33,7 +42,7 @@ export function getPostsByTag(tag: string, fields: string[] | undefined = undefi
       let hasTag = false
 
       for (let i = 0; i < post.tags.length; i++) {
-        const element = post.tags[i];
+        const element = post.tags[i]
 
         if (element.slug === tag) {
           hasTag = true
@@ -52,12 +61,15 @@ export function getPostsByTag(tag: string, fields: string[] | undefined = undefi
   return content
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== 'GET') {
     res.status(405).end()
   }
 
-  const slug = req.query?.tag?.toString()
+  const slug = req.query?.tag?.toString() as string
   const queryFields = req.query?.fields?.toString()
 
   const fields: string[] = []
