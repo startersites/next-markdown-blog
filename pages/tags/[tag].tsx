@@ -3,16 +3,15 @@ import { GetStaticProps, GetStaticPaths } from 'next'
 import FeedItem from 'components/FeedItem'
 import PageLayout from 'components/PageLayout'
 import { getTags, getTagBySlug } from 'pages/api/tags'
-
-const blog = require('site.config.json')
+import site from 'site.config'
 
 export default function Tag({ tag }: { tag: ObjectWithCategory }) {
   return (
     <PageLayout
-      title={`${blog.tags.name_singular}: ${tag.title}`}
-      metaTitle={`${tag.title}${blog.seo.sep}${blog.tags.name}`}
+      title={`${site.tags.name_singular}: ${tag.title}`}
+      metaTitle={`${tag.title}${site.seo.sep}${site.tags.name}`}
     >
-      <section className="feed-wrapper">
+      <section>
         {tag.posts.map((post) => (
           <FeedItem
             key={post.slug}
@@ -35,7 +34,7 @@ export const getStaticPaths: GetStaticPaths = () => {
     paths: tags.map((tag) => {
       return {
         params: {
-          tag: tag.slug,
+          tag: tag.slug as string,
         },
       }
     }),

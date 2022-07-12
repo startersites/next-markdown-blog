@@ -26,20 +26,19 @@ export default function Search({ search }: { search: SearchResult[] }) {
     })
 
     setSearchItems(filteredItems)
-  }, [searchValue])
+  }, [search, searchValue])
 
   return (
-    <PageLayout title="Search">
+    <PageLayout title="Search" type="search">
       <input
         id="search"
-        className="border border-gray-400 w-full max-w-md text-xl px-3 py-2 rounded-md font-sans"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
         placeholder="Search..."
         ref={inputRef}
         autoComplete="off"
       />
-      <section className="feed-wrapper mt-8">
+      <section>
         {searchItems.map((search, i) => (
           <FeedItem
             key={i}

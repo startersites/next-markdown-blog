@@ -12,8 +12,7 @@ export const tagsDirectory = join(process.cwd(), '_content/tags')
 
 export function getTagsBySlugs(
   slugs: string[],
-  fields: string[] | undefined = undefined,
-  nested = false
+  fields: string[] | undefined = undefined
 ) {
   const tags: MarkdownFileObject[] = []
 
@@ -44,14 +43,14 @@ export function getTagBySlug(
       ? getPostsByTag(realSlug, ['title', 'category', 'excerpt', 'thumbnail'])
       : undefined
 
-  const theData: { [x: string]: any } = {
+  const theData: { [x: string]: unknown } = {
     ...data,
     posts,
     slug: realSlug,
   }
 
   if (fields !== undefined && fields.length) {
-    const filteredData: { [x: string]: any } = { slug: realSlug }
+    const filteredData: { [x: string]: unknown } = { slug: realSlug }
 
     fields.forEach((field) => {
       if (field !== slug && theData[field]) {
@@ -75,7 +74,12 @@ export function getTags(fields: string[] | undefined = undefined) {
   const content = slugs
     .map((slug) => getTagBySlug(slug, fields, true))
     .sort((a, b) => {
-      if (a.title && b.title) {
+      if (
+        a.title &&
+        b.title &&
+        typeof a.title === 'string' &&
+        typeof b.title === 'string'
+      ) {
         return a.title > b.title ? -1 : 1
       }
 

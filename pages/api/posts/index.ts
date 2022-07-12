@@ -1,4 +1,5 @@
 import matter from 'gray-matter'
+import md from 'markdown-it'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import fs from 'fs'
@@ -7,8 +8,6 @@ import { join } from 'path'
 import { getAuthorBySlug } from '../authors'
 import { getCategoryBySlug } from '../categories'
 import { getTagBySlug } from '../tags'
-
-const md = require('markdown-it')()
 
 export const postsDirectory = join(process.cwd(), '_content/posts')
 
@@ -52,17 +51,17 @@ export function getPostBySlug(
     tags.push(...data.tags)
   }
 
-  const theData: { [x: string]: any } = {
+  const theData: { [x: string]: unknown } = {
     ...data,
     slug: realSlug,
     author,
     category,
     tags,
-    content: md.render(content),
+    content: md().render(content),
   }
 
   if (fields !== undefined && fields.length) {
-    const filteredData: { [x: string]: any } = { slug: realSlug }
+    const filteredData: { [x: string]: unknown } = { slug: realSlug }
 
     fields.forEach((field) => {
       if (field !== slug && theData[field]) {
@@ -85,7 +84,18 @@ export function getPosts(fields: string[] | undefined = undefined) {
 
   const content = slugs
     .map((slug) => getPostBySlug(slug, fields, true))
-    .sort((a, b) => (a.published_at > b.published_at ? -1 : 1))
+    .sort((a, b) => {
+      if (
+        a.published_at &&
+        b.published_at &&
+        typeof a.published_at === 'string' &&
+        typeof b.published_at === 'string'
+      ) {
+        return a.published_at > b.published_at ? -1 : 1
+      }
+
+      return 0
+    })
 
   return content
 }

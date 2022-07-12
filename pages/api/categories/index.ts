@@ -1,12 +1,11 @@
 import matter from 'gray-matter'
+import md from 'markdown-it'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import fs from 'fs'
 import { join } from 'path'
 
 import { getPostsByCategory } from './[category]/posts'
-
-// const md = require('markdown-it')()
 
 const categoriesDirectory = join(process.cwd(), '_content/categories')
 
@@ -20,7 +19,7 @@ export function getCategoryBySlug(
   const fullPath = join(categoriesDirectory, `${realSlug}.md`)
 
   const fileContents = fs.readFileSync(fullPath, 'utf8')
-  const { data } = matter(fileContents)
+  const { data, content } = matter(fileContents)
 
   const posts =
     nested && (!fields || fields.length === 0 || fields.includes('posts'))
@@ -32,14 +31,15 @@ export function getCategoryBySlug(
         ])
       : undefined
 
-  const theData: { [x: string]: any } = {
+  const theData: { [x: string]: unknown } = {
     ...data,
     posts,
     slug: realSlug,
+    content: md().render(content),
   }
 
   if (fields !== undefined && fields.length) {
-    const filteredData: { [x: string]: any } = { slug: realSlug }
+    const filteredData: { [x: string]: unknown } = { slug: realSlug }
 
     fields.forEach((field) => {
       if (field !== slug && theData[field]) {
@@ -63,7 +63,12 @@ export function getCategories(fields: string[] | undefined = undefined) {
   const content = slugs
     .map((slug) => getCategoryBySlug(slug, fields, true))
     .sort((a, b) => {
-      if (a.title && b.title) {
+      if (
+        a.title &&
+        b.title &&
+        typeof a.title === 'string' &&
+        typeof b.title === 'string'
+      ) {
         return a.title > b.title ? -1 : 1
       }
 

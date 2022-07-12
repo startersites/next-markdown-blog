@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-const blog = require('site.config.json')
+import site from 'site.config'
 
 interface MetaHeadProps {
   title?: string
@@ -16,11 +16,11 @@ export default function MetaHead(props: MetaHeadProps) {
 
   const metaTitle =
     props.title !== undefined
-      ? `${props.title}${blog.seo.sep}${blog.name}`
-      : `${blog.name}${blog.seo.sep}${blog.tagline}`
+      ? `${props.title}${site.seo.sep}${site.name}`
+      : `${site.name}${site.seo.sep}${site.tagline}`
 
   const description =
-    props.description !== undefined ? props.description : blog.tagline
+    props.description !== undefined ? props.description : site.tagline
 
   const type = props.type !== undefined ? props.type : 'website'
 
@@ -32,7 +32,7 @@ export default function MetaHead(props: MetaHeadProps) {
   const image = props.image ? props.image : hostname + '/images/social-card.png'
 
   const authorTwitter =
-    props.authorTwitter !== undefined ? props.authorTwitter : blog.twitter
+    props.authorTwitter !== undefined ? props.authorTwitter : site.twitter
 
   return (
     <Head>
@@ -61,8 +61,10 @@ export default function MetaHead(props: MetaHeadProps) {
       <meta property="og:image:alt" content={metaTitle} />
       <meta name="twitter:image:alt" content={metaTitle} />
 
-      <meta name="twitter:creator" content={`@` + authorTwitter} />
-      <meta name="twitter:site" content={blog.twitter} />
+      {authorTwitter && (
+        <meta name="twitter:creator" content={`@` + authorTwitter} />
+      )}
+      {site.twitter && <meta name="twitter:site" content={site.twitter} />}
       <meta name="twitter:card" content="summary_large_image" />
     </Head>
   )

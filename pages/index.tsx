@@ -3,13 +3,12 @@ import type { GetStaticProps } from 'next'
 import FeedItem from 'components/FeedItem'
 import PageLayout from 'components/PageLayout'
 import { getPosts } from 'pages/api/posts'
-
-const blog = require('site.config.json')
+import site from 'site.config'
 
 export default function Home({ posts }: { posts: NestedPostObject[] }) {
   return (
-    <PageLayout title={blog.posts.name}>
-      <section className="feed-wrapper">
+    <PageLayout title={site.posts.name}>
+      <section>
         {posts.map((post, i) => (
           <FeedItem
             key={post.slug}

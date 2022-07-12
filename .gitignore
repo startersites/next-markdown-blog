@@ -19,7 +19,8 @@ dist/
 # misc
 .DS_Store
 *.pem
-.yarn/cache
+.yarn/**
+!.yarn/releases
 
 # debug
 npm-debug.log*

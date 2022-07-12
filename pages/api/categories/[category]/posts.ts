@@ -17,7 +17,7 @@ export function getPostsByCategory(
     .map((slug) => getPostBySlug(slug, updatedFields))
     .sort((a, b) => (a.publish_date > b.publish_date ? -1 : 1))
 
-  for (var i = content.length - 1; i >= 0; i--) {
+  for (let i = content.length - 1; i >= 0; i--) {
     const post = content[i]
 
     if (post.category !== category && post.category.slug !== category) {
@@ -38,7 +38,7 @@ export default async function handler(
     res.status(405).end()
   }
 
-  const slug = req.query?.category?.toString()
+  const slug = req.query?.category?.toString() as string
   const queryFields = req.query?.fields?.toString()
 
   const fields: string[] = []

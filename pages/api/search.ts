@@ -9,7 +9,7 @@ export function getSearch(fields: string[] | undefined = undefined) {
   const content: SearchResult[] = []
 
   function processData(
-    func: (fields: string[] | undefined) => any,
+    func: (fields: string[] | undefined) => { [x: string]: unknown }[],
     type: 'author' | 'category' | 'post' | 'tag'
   ) {
     const getData = func(['title', 'category', 'excerpt'])

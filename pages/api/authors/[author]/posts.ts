@@ -20,7 +20,7 @@ export function getPostsByAuthor(
     .map((slug) => getPostBySlug(slug, spreadFields, nested))
     .sort((a, b) => (a.publish_date > b.publish_date ? -1 : 1))
 
-  for (var i = content.length - 1; i >= 0; i--) {
+  for (let i = content.length - 1; i >= 0; i--) {
     const post = content[i]
 
     if (post.author !== author && post.author.slug !== author) {
@@ -41,7 +41,7 @@ export default async function handler(
     res.status(405).end()
   }
 
-  const slug = req.query?.author?.toString()
+  const slug = req.query?.author?.toString() as string
   const queryFields = req.query?.fields?.toString()
 
   const fields: string[] = []

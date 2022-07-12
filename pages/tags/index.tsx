@@ -3,13 +3,12 @@ import { GetStaticProps } from 'next'
 import FeedItem from 'components/FeedItem'
 import PageLayout from 'components/PageLayout'
 import { getTags } from 'pages/api/tags'
-
-const blog = require('site.config.json')
+import site from 'site.config'
 
 export default function Tags({ tags }: { tags: ObjectWithPosts[] }) {
   return (
-    <PageLayout title={blog.tags.name}>
-      <section className="feed-wrapper">
+    <PageLayout title={site.tags.name}>
+      <section>
         {tags.map(
           (tag) =>
             tag?.posts?.length > 0 && (

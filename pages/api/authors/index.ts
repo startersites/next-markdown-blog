@@ -1,12 +1,11 @@
 import matter from 'gray-matter'
+import md from 'markdown-it'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import fs from 'fs'
 import { join } from 'path'
 
 import { getPostsByAuthor } from './[author]/posts'
-
-const md = require('markdown-it')()
 
 const authorsDirectory = join(process.cwd(), '_content/authors')
 
@@ -31,15 +30,15 @@ export function getAuthorBySlug(
         )
       : undefined
 
-  const theData: { [x: string]: any } = {
+  const theData: { [x: string]: unknown } = {
     ...data,
     slug: realSlug,
     posts,
-    content: md.render(content),
+    content: md().render(content),
   }
 
   if (fields !== undefined && fields.length) {
-    const filteredData: { [x: string]: any } = { slug: realSlug }
+    const filteredData: { [x: string]: unknown } = { slug: realSlug }
 
     fields.forEach((field) => {
       if (field !== slug && theData[field]) {
@@ -63,8 +62,13 @@ export function getAuthors(fields: string[] | undefined = undefined) {
   const content = slugs
     .map((slug) => getAuthorBySlug(slug, fields, true))
     .sort((a, b) => {
-      if (a.title && b.title) {
-        return a.title > b.title ? -1 : 1
+      if (
+        a.title &&
+        b.title &&
+        typeof a.title === 'string' &&
+        typeof b.title === 'string'
+      ) {
+        return a?.title > b?.title ? -1 : 1
       }
 
       return 0

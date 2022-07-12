@@ -3,8 +3,7 @@ import type { GetStaticProps } from 'next'
 import FeedItem from 'components/FeedItem'
 import PageLayout from 'components/PageLayout'
 import { getCategories } from 'pages/api/categories'
-
-const blog = require('site.config.json')
+import site from 'site.config'
 
 export default function Categories({
   categories,
@@ -12,8 +11,8 @@ export default function Categories({
   categories: ObjectWithPosts[]
 }) {
   return (
-    <PageLayout title={blog.categories.name}>
-      <section className="feed-wrapper">
+    <PageLayout title={site.categories.name}>
+      <section>
         {categories.map(
           (category) =>
             category?.posts?.length > 0 && (
